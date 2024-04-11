@@ -1,0 +1,103 @@
+> Problem: 1312
+> [1312. 让字符串成为回文串的最少插入次数](https://leetcode.cn/problems/minimum-insertion-steps-to-make-a-string-palindrome/description/)
+
+[TOC]
+
+# 思路
+
+这道题 解题共分为3步
+
+- 1 问题是 需要将现有字符串通过插入元素变为回文串？
+
+  假设字符串s的长度为n，如果我们在该字符串s中找到最大的回文子序列，长度为l，那么n-l是我们删除的元素，也可以增加n-l个元素，使其还是一个回文子串，即我们想要的答案
+
+  所以将问题转化为 字符串s 中的 最长回文子序列
+
+- 2 如何求字符串s 中的 最长回文子序列？
+
+  直接求可能比较难理解，考虑 回文串的性质  翻转和自身是一样的，那么
+
+  我们翻转s 生成新的 字符串 s1
+
+  求 s 和 s1的最长 公共子序列 是不是非常好理解
+
+  举例：
+
+  * 
+
+  ```
+  s = mbadm 
+  s1 = mdabm 
+
+  公共子序列为 mam 即 公共子序列 
+
+  也是 字符串s 中的 最长回文子序列
+
+  ```
+- 3 求s和s1的最长公共子序列
+
+  可以参考 [我的1143题 题解](https://leetcode.cn/problems/longest-common-subsequence/solutions/2564956/yi-qi-zhao-gong-zuo-er-wei-dpshu-zu-jie-jb8ja/) 理解
+
+# 解题方法
+
+> 如思路所述！！！
+
+# 复杂度
+
+时间复杂度:
+
+> $O(n*n)$
+
+空间复杂度:
+
+> $O(n*n)$
+
+# Code
+
+* []
+
+```JavaScript
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var minInsertions = function(s) {
+    
+    let s1 = " "+s
+    let s2 = " "+s.split("").reverse().join("");
+    let n = s1.length;
+    
+    let dp = Array(n);
+    for(let i=0;i<n;i++) dp[i] = Array(n).fill(0);
+
+    for (let i=1;i<n;i++){
+        for(let j=1;j<n;j++){
+            dp[i][j] = Math.max(dp[i-1][j],dp[i][j-1]);
+            if(s1[i]===s2[j]) dp[i][j] = Math.max(dp[i-1][j-1]+1, dp[i][j]);
+        }
+    }
+    // console.log(dp);
+    return n-1-dp[n-1][n-1];
+
+};
+```
+
+* []
+
+```python
+
+class Solution:
+    def minInsertions(self, s: str) -> int:
+        s1 = " "+s[::-1]
+        s2 = " "+s
+
+        n = len(s1)
+        dp = [[0]*n for _ in range(n)]
+        for i in range(1,n):
+            for j in range(1,n):
+                dp[i][j] = max(dp[i-1][j],dp[i][j-1])
+                if s1[i] == s2[j]:
+                    dp[i][j] = max(dp[i-1][j-1]+1, dp[i][j])
+        return n-1-dp[n-1][n-1]    
+```
+

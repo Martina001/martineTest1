@@ -1,0 +1,79 @@
+### 解题思路
+
+归并排序思路 用在链表排序上
+
+### 代码
+
+* java
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+   public ListNode sortList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        return depart(head);
+    }
+
+    //链表分而治之排序
+    public ListNode depart(ListNode head) {
+        if (head.next == null) {
+            return head;
+        }
+        
+        //一分为二
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode tmp = slow.next;
+        slow.next = null;
+        ListNode left = depart(head);
+        ListNode right = depart(tmp);
+
+        //左右各为有序链表，再整合
+        return mergeList(left, right);
+    }
+
+    public ListNode mergeList(ListNode head1, ListNode head2) {
+        ListNode dumpNode = new ListNode(0);
+        ListNode curNode = dumpNode;
+        while (head1 != null && head2 != null) {
+            if (head1.val <= head2.val) {
+                curNode.next = head1;
+                curNode = head1;
+                head1 = head1.next;
+            } else {
+                curNode.next = head2;
+                curNode = head2;
+                head2 = head2.next;
+            }
+        }
+
+        if (head1 != null) {
+            curNode.next = head1;
+        }
+
+        if (head2 != null) {
+            curNode.next = head2;
+        }
+
+        return dumpNode.next;
+    }
+}
+```
+

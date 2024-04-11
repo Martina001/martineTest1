@@ -1,0 +1,90 @@
+# 解法
+
+## 思路和算法
+
+如果时间大于等于完成至少 $\textit{totalTrips}$ 次旅途的最少时间，则完成的旅途数目一定大于等于 $\textit{totalTrips}$；如果时间小于完成至少 $\textit{totalTrips}$ 次旅途的最少时间，则完成的旅途数目一定小于 $\textit{totalTrips}$。因此，这道题是二分查找判定问题，需要找到完成至少 $\textit{totalTrips}$ 次旅途的最少时间。
+
+将数组 $\textit{time}$ 中的最小元素记为 $\textit{shortestTime}$，则 $\textit{shortestTime}$ 为用时最短的公交车完成一次旅途的时间。
+
+用 $\textit{low}$ 和 $\textit{high}$ 分别表示二分查找的下界和上界。由于 $\textit{totalTrips} \ge 1$，因此必须满足至少有一辆公交车完成一次旅途，$\textit{low}$ 的初始值等于 $\textit{shortestTime}$；由于当用时最短的公交车完成 $\textit{totalTrips}$ 次旅途时所有公交车完成的旅途数目一定大于等于 $\textit{totalTrips}$，因此 $\textit{high}$ 的初始值等于 $\textit{shortestTime} \times \textit{totalTrips}$。
+
+每次查找时，取 $\textit{mid}$ 为 $\textit{low}$ 和 $\textit{high}$ 的平均数向下取整，将 $\textit{mid}$ 作为花费的时间，判断完成的旅途数目是否大于等于 $\textit{totalTrips}$，执行如下操作。
+
+- 如果完成的旅途数目大于等于 $\textit{totalTrips}$，则完成至少 $\textit{totalTrips}$ 次旅途的最少时间小于等于 $\textit{mid}$，因此在 $[\textit{low}, \textit{mid}]$ 中继续查找。
+
+- 如果完成的旅途数目小于 $\textit{totalTrips}$，则完成至少 $\textit{totalTrips}$ 次旅途的最少时间大于 $\textit{mid}$，因此在 $[\textit{mid} + 1, \textit{high}]$ 中继续查找。
+
+当 $\textit{low} = \textit{high}$ 时，查找结束，此时 $\textit{low}$ 即为完成至少 $\textit{totalTrips}$ 次旅途的最少时间。
+
+实现方面可以优化。由于只需要判断完成的旅途数目是否大于等于 $\textit{totalTrips}$，不需要计算具体的完成的旅途数目，因此如果完成的旅途数目已经大于等于 $\textit{totalTrips}$ 则可以提前返回。
+
+## 代码
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public long minimumTime(int[] time, int totalTrips) {
+        int shortestTime = Arrays.stream(time).min().getAsInt();
+        long low = shortestTime, high = (long) shortestTime * totalTrips;
+        while (low < high) {
+            long mid = low + (high - low) / 2;
+            if (canCompleteTrips(time, mid, totalTrips)) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+
+    public boolean canCompleteTrips(int[] time, long totalTime, int totalTrips) {
+        long trips = 0;
+        for (int num : time) {
+            trips += totalTime / num;
+            if (trips >= totalTrips) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public long MinimumTime(int[] time, int totalTrips) {
+        int shortestTime = time.Min();
+        long low = shortestTime, high = (long) shortestTime * totalTrips;
+        while (low < high) {
+            long mid = low + (high - low) / 2;
+            if (CanCompleteTrips(time, mid, totalTrips)) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+
+    public bool CanCompleteTrips(int[] time, long totalTime, int totalTrips) {
+        long trips = 0;
+        foreach (int num in time) {
+            trips += totalTime / num;
+            if (trips >= totalTrips) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n \log (m \times \textit{totalTrips}))$，其中 $n$ 是数组 $\textit{time}$ 的长度，$m$ 是数组 $\textit{time}$ 中的最小值，$\textit{totalTrips}$ 是至少需要完成的旅途数目。需要执行 $O(\log (m \times \textit{totalTrips}))$ 次二分查找，每次二分查找需要 $O(n)$ 的时间遍历数组 $\textit{time}$ 并计算完成的旅途数目，时间复杂度是 $O(n \log (m \times \textit{totalTrips}))$。
+
+- 空间复杂度：$O(1)$。
+

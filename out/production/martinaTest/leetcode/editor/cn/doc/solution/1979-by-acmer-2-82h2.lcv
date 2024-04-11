@@ -1,0 +1,17 @@
+* javascript
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findGCD = function(nums) {
+	nums.sort((a, b) => a-b);
+    function gcd(v1, v2){
+		if(v1 % v2 === 0) return v2;
+        return gcd(v2, v1 % v2)
+    }
+    return gcd(nums[nums.length-1], nums[0]);
+};
+```
+

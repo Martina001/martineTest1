@@ -1,0 +1,49 @@
+> Problem: [1011. 在 D 天内送达包裹的能力](https://leetcode.cn/problems/capacity-to-ship-packages-within-d-days/description/)
+
+[TOC]
+
+# 解题
+
+![iShot_2024-01-03_15.52.22.jpg](https://pic.leetcode.cn/1704268360-MWLEuA-iShot_2024-01-03_15.52.22.jpg)
+
+# Code
+
+* []
+
+```JavaScript
+var shipWithinDays = function (weights, days) {
+    let left = Math.max(...weights);
+    let right = weights.reduce((sum, curr) => sum += curr, 0);
+
+    while (left < right) {
+        let mid = left + Math.floor((right - left) / 2);
+
+        let cnt = check(weights, mid);
+        if (cnt > days) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+
+    return left;
+};
+
+function check(weights, maxIntervalSum) {
+    let cnt = 1;
+    let sum = 0;
+
+    for (const w of weights) {
+        if (sum + w > maxIntervalSum) {
+            cnt++;
+            sum = 0;
+        }
+        sum += w;
+    }
+
+    return cnt;
+}
+```
+
+# [题解传送门](https://ricepudding.cn/article/35a81c72)
+

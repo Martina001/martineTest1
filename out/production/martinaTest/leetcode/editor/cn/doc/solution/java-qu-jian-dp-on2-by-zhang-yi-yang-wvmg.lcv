@@ -1,0 +1,136 @@
+## 思路和算法
+
+前置知识：OI WIKI: [区间 DP](https://oi-wiki.org/dp/interval/)
+
+* 
+
+```
+for (int span = 2; span <= n; span++)
+    for (int i = 0; i + span - 1 < n; i++) {
+        int j = i + span - 1;
+        // ...
+    }
+```
+
+## 代码
+
+* java
+
+```java
+class Solution {
+    public int minInsertions(String s) {
+        int n = s.length();
+        char[] cs = s.toCharArray();
+        // f[i][j] 表示 [i,j] 区间最少添加字符的数量，使 [i,j] 变为回文串
+        int[][] f = new int[n][n];
+        for (int span = 2; span <= n; span++) {
+            for (int i = 0; i + span - 1 < n; i++) {
+                int j = i + span - 1;
+                f[i][j] = Math.min(f[i + 1][j], f[i][j - 1]) + 1;
+                if (cs[i] == cs[j]) {
+                    f[i][j] = Math.min(f[i][j], f[i + 1][j - 1]);
+                }
+            }
+        }
+        return f[0][n - 1];
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：`O(n^2)`。
+- 空间复杂度：`O(n^2)`。
+
+## 相似题目
+
+[516. 最长回文子序列](https://leetcode.cn/problems/longest-palindromic-subsequence/) [中等]
+
+* java
+
+```java
+class Solution {
+    public int longestPalindromeSubseq(String s) {
+        int n = s.length();
+        if (n == 1) return 1;
+        char[] cs = s.toCharArray();
+        // f[i][j] 表示 [i,j] 区间最长回文子序列的长度
+        int[][] f = new int[n][n];
+        for (int span = 2; span <= n; span++) {
+            for (int i = 0; i + span - 1 < n; i++) {
+                f[i][i] = 1;
+                int j = i + span - 1;
+                if (cs[i] == cs[j]) {
+                    f[i][j] = f[i + 1][j - 1] + 2;
+                } else {
+                    f[i][j] = Math.max(f[i + 1][j], f[i][j - 1]);
+                }
+            }
+        }
+        return f[0][n - 1];
+    }
+}
+```
+
+[1216. 验证回文字符串 III](https://leetcode.cn/problems/valid-palindrome-iii/) [困难]
+
+* java
+
+```java
+class Solution {
+    public boolean isValidPalindrome(String s, int k) {
+        int n = s.length();
+        char[] cs = s.toCharArray();
+        // 区间 DP
+        // f[i][j] = k 表示 [i,j] 是 k 回文
+        int[][] f = new int[n][n];
+        for (int span = 2; span <= n; span++) {
+            for (int i = 0; i + span - 1 < n; i++) {
+                int j = i + span - 1;
+                f[i][j] = Math.min(f[i + 1][j] + 1, f[i][j - 1] + 1);
+                if (cs[i] == cs[j]) {
+                    f[i][j] = Math.min(f[i][j], f[i + 1][j - 1]);
+                }
+            }
+        }
+        return f[0][n - 1] <= k;
+    }
+}
+```
+
+[1682. 最长回文子序列 II](https://leetcode.cn/problems/longest-palindromic-subsequence-ii/) [中等]
+
+* java
+
+```java
+class Solution {
+    public int longestPalindromeSubseq(String s) {
+        int n = s.length();
+        char[] cs = s.toCharArray();
+        // 区间 DP
+        // f[i][j] 表示 [i,j] 区间最长"好的回文子序列"的长度；g[i][j] 表示 [i,j] 两边最近的回文字符
+        int[][] f = new int[n][n];
+        char[][] g = new char[n][n];
+        for (int span = 2; span <= n; span++) {
+            for (int i = 0; i + span - 1 < n; i++) {
+                int j = i + span - 1;
+                if (cs[i] == cs[j] && (f[i + 1][j - 1] == 0 || g[i + 1][j - 1] != cs[i])) {
+                    f[i][j] = f[i + 1][j - 1] + 2;
+                    g[i][j] = cs[i];
+                } else {
+                    if (f[i + 1][j] > f[i][j - 1]) {
+                        f[i][j] = f[i + 1][j];
+                        g[i][j] = g[i + 1][j];
+                    } else {
+                        f[i][j] = f[i][j - 1];
+                        g[i][j] = g[i][j - 1];
+                    }
+                }
+            }
+        }
+        return f[0][n - 1];
+    }
+}
+```
+
+（全文完）

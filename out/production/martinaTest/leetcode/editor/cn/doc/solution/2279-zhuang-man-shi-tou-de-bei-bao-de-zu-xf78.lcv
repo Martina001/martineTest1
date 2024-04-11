@@ -1,0 +1,78 @@
+# 解法
+
+## 思路和算法
+
+为了计算装满石头的背包的最大数量，需要首先计算每个背包可以放置的额外石头数量。创建长度为 $n$ 的数组 $\textit{remains}$，其中 $\textit{remains}[i] = \textit{capacity}[i] - \textit{rocks}[i]$ 表示编号 $i$ 的背包可以放置的额外石头数量。
+
+根据贪心策略，当可以放置的额外石头数量 $\textit{additionalRocks}$ 确定时，为了使装满石头的背包的数量最大化，应优先将额外石头数量少的背包装满。理由如下。
+
+用 $r(1)$ 到 $r(n)$ 分别表示每个背包可以放置的额外石头数量，满足对于所有 $1 \le i < n$ 都有 $r(i) \le r(i + 1)$。优先将额外石头数量最少的背包装满时，如果可以将 $x$ 个背包装满，则 $x$ 个背包放置的额外石头数量是 $\textit{total} = \sum_{i = 1}^x r(i) \le \textit{additionalRocks}$。如果 $x = n$ 则可以将所有背包都装满石头，如果 $x < n$ 则考虑将其中一个背包换成额外石头数量更多的背包，取 $1 \le i \le n$ 和 $j > n$ 的 $i$ 和 $j$，$r(i) \le r(j)$，将 $r(i)$ 替换成 $r(j)$ 之后，$x$ 个背包放置的额外石头数量是 $\textit{total'} = \textit{total} + r(j) - r(i) \ge \textit{total}$，因此 $\textit{total'} \le \textit{additionalRocks}$ 未必成立，即未必能使用 $\textit{additionalRocks}$ 块石头装满 $x$ 个背包。因此不使用贪心策略一定不能使装满石头的背包的数量更多，使用贪心策略可以使装满石头的背包的数量最大化。
+
+使用贪心策略的具体做法是，将数组 $\textit{remains}$ 按升序排序，然后从小到大遍历数组 $\textit{remains}$，当遍历到下标 $i$ 时，执行如下操作。
+
+1. 计算当前下标 $i$ 处的背包最多可以放置的额外石头数量 $\textit{currRocks}$。由于当前背包可以放置的额外石头数量上限是 $\textit{remains}[i]$ 且剩余的额外石头数量是 $\textit{additionalRocks}$，因此 $\textit{currRocks} = \min(\textit{remains}[i], \textit{additionalRocks})$。
+
+2. 将 $\textit{remains}[i]$ 的值减 $\textit{currRocks}$，将 $\textit{additionalRocks}$ 的值减 $\textit{currRocks}$。
+
+3. 如果 $\textit{remains}[i]$ 的值变成 $0$，则当前背包装满石头，将装满石头的背包的数量加 $1$。
+
+重复上述操作，直到数组 $\textit{remains}$ 遍历结束或 $\textit{additionalRocks}$ 的值变成 $0$ 时，结束操作，此时可以得到装满石头的背包的最大数量。
+
+## 代码
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public int maximumBags(int[] capacity, int[] rocks, int additionalRocks) {
+        int n = capacity.length;
+        int[] remains = new int[n];
+        for (int i = 0; i < n; i++) {
+            remains[i] = capacity[i] - rocks[i];
+        }
+        Arrays.sort(remains);
+        int fullCount = 0;
+        for (int i = 0; i < n && additionalRocks > 0; i++) {
+            int currRocks = Math.min(remains[i], additionalRocks);
+            remains[i] -= currRocks;
+            additionalRocks -= currRocks;
+            if (remains[i] == 0) {
+                fullCount++;
+            }
+        }
+        return fullCount;
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public int MaximumBags(int[] capacity, int[] rocks, int additionalRocks) {
+        int n = capacity.Length;
+        int[] remains = new int[n];
+        for (int i = 0; i < n; i++) {
+            remains[i] = capacity[i] - rocks[i];
+        }
+        Array.Sort(remains);
+        int fullCount = 0;
+        for (int i = 0; i < n && additionalRocks > 0; i++) {
+            int currRocks = Math.Min(remains[i], additionalRocks);
+            remains[i] -= currRocks;
+            additionalRocks -= currRocks;
+            if (remains[i] == 0) {
+                fullCount++;
+            }
+        }
+        return fullCount;
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n \log n)$，其中 $n$ 是数组 $\textit{capacity}$ 和 $\textit{rocks}$ 的长度。计算数组 $\textit{remains}$ 的时间是 $O(n)$，对数组 $\textit{remains}$ 排序的时间是 $O(n \log n)$，排序后遍历数组 $\textit{remains}$ 计算装满石头的背包的最大数量的时间是 $O(n)$，因此时间复杂度是 $O(n \log n)$。
+
+- 空间复杂度：$O(n)$，其中 $n$ 是数组 $\textit{capacity}$ 和 $\textit{rocks}$ 的长度。需要创建长度为 $n$ 的数组 $\textit{remains}$，排序的递归调用栈空间是 $O(\log n)$，因此空间复杂度是 $O(n)$。
+

@@ -1,0 +1,31 @@
+> Problem: [63. 不同路径 II](https://leetcode.cn/problems/unique-paths-ii/description/)
+
+[TOC]
+
+# 思路
+
+计算可以走到每个格子的路线数，最后相加。
+
+# Code
+
+* []
+
+```Python
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        row = len(obstacleGrid)
+        col = len(obstacleGrid[0])
+        dp = [[0]*col for _ in range(row)]
+
+        for i in range(row):
+            for j in range(col):
+                if not obstacleGrid[i][j]:
+                    if i == j == 0:
+                        dp[i][j] = 1
+                    else:
+                        up = dp[i-1][j] if i>0 else 0
+                        left = dp[i][j-1] if j>0 else 0
+                        dp[i][j] = up + left
+        return dp[-1][-1]
+```
+

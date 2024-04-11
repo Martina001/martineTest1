@@ -1,0 +1,31 @@
+* 
+
+```
+public int maximumCandies(int[] candies, long k) {
+        int left = 1;
+        int right = 0;
+        for (int candy : candies) {
+            right = Math.max(candy, right);
+        }
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (isMaxCandy(candies, k, mid)) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return right;
+    }
+
+    public boolean isMaxCandy(int[] candies, long k, int mid) {
+        //mid 是分给每个小孩的糖果
+        long count = 0;
+        for (int candy : candies) {
+            count = count + candy / mid;
+        }
+        //返回可以分给多少小孩的数量; 如果多于K个小孩，那就增加分给每个小孩的糖果数量，left = mid + 1
+        return count >= k;
+    }
+```
+

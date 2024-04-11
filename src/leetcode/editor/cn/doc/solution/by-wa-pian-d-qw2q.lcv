@@ -1,0 +1,53 @@
+### 解题思路
+
+假设一个人分m个糖，够不够分
+够分？再多一点试一试
+不够分，再少一点试一试
+
+尝试左边界不能是0，WA了一个。一旦尝试0，0变成分子了。尝试最小值1，最多没有一个成功的，ans原样0返回了。
+
+-----
+
+分享一个练习题，不能说非常像，只能说一毛一样
+
+[中等] 2187. 完成旅途的最少时间【数组】【二分查找】[[二分](https://leetcode-cn.com/problems/minimum-time-to-complete-trips/solution/2187-wan-cheng-lu-tu-de-zui-shao-shi-jia-y4y9/)] [[2187. 完成旅途的最少时间](https://leetcode-cn.com/problems/minimum-time-to-complete-trips/)]
+
+有用请留下大拇指！
+
+### 代码
+
+* java
+
+```java
+class Solution {
+	public int maximumCandies(int[] candies, long k) {
+		long sum = 0;// 一共多少糖
+		int max = 0;// 最大一堆儿多少糖
+		for (int i = 0; i < candies.length; i++) {
+			int num = candies[i];
+			sum += num;
+			max = Math.max(max, num);
+		}
+		if (sum < k) {
+			return 0;
+		}
+		int l = 1, r = max;// l不能用0
+		int ans = 0;
+		while (l <= r) {
+			int m = ((r - l) >> 1) + l;
+			long cnt = 0;
+			for (int i = 0; i < candies.length; i++) {
+				cnt += candies[i] / m;// 按照每个小孩m个糖，可以分多少个人
+			}
+			if (cnt >= k) {// 能多分出人，说明每个小孩的糖可能分少了，尝试多分一个
+				ans = m;
+				l = m + 1;
+			} else {
+				r = m - 1;
+			}
+		}
+		return ans;
+	}
+}
+```
+

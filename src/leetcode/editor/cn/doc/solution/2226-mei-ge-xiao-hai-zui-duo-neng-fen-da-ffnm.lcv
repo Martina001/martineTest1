@@ -1,0 +1,104 @@
+# 解法
+
+## 思路和算法
+
+首先计算数组 $\textit{candies}$ 的元素和 $\textit{sum}$，即所有糖果的数目，判断是否可以给每个小孩分配至少 $1$ 颗糖果。如果 $\textit{sum} < k$，则不能给每个小孩分配至少 $1$ 颗糖果，返回 $0$。当 $\textit{sum} \ge k$ 时，计算每个小孩最多能分到的糖果数目。
+
+假设给每个小孩分配 $x$ 颗糖果，则对于大小为 $\textit{candy}$ 的一堆糖果，最多可以满足的小孩数目是 $\Big\lfloor \dfrac{\textit{candy}}{x} \Big\rfloor$。遍历数组 $\textit{candies}$ 即可计算得到所有糖果可以满足的小孩数目。
+
+当 $x$ 增加时，$\Big\lfloor \dfrac{\textit{candy}}{x} \Big\rfloor$ 不变或减少，可以满足的小孩数目不变或减少；当 $x$ 减少时，$\Big\lfloor \dfrac{\textit{candy}}{x} \Big\rfloor$ 不变或增加，可以满足的小孩数目不变或增加。因此当每个小孩分到的糖果数目小于等于答案时，可以满足的小孩数目一定大于等于 $k$；当每个小孩分到的糖果数目大于答案时，可以满足的小孩数目一定小于 $k$。因此，这道题是二分查找判定问题，需要找到每个小孩最多能分到的糖果数目。
+
+用 $\textit{low}$ 和 $\textit{high}$ 分别表示二分查找的下界和上界。由于 $\textit{sum} \ge k$，每个小孩至少能分到 $1$ 颗糖果，因此 $\textit{low}$ 的初始值等于 $1$；由于糖果总数是 $\textit{sum}$，在不考虑堆的分配的情况下，每个小孩至多能分到 $\Big\lfloor \dfrac{\textit{sum}}{k} \Big\rfloor$ 颗糖果，因此 $\textit{high}$ 的初始值等于 $\Big\lfloor \dfrac{\textit{sum}}{k} \Big\rfloor$。
+
+每次查找时，取 $\textit{mid}$ 为 $\textit{low}$ 和 $\textit{high}$ 的平均数向上取整，将 $\textit{mid}$ 作为每个小孩分到的糖果数目，计算可以满足的小孩数目，执行如下操作。
+
+- 如果可以满足的小孩数目大于等于 $k$，则每个小孩最多能分到的糖果数目大于等于 $\textit{mid}$，因此在 $[\textit{mid}, \textit{high}]$ 中继续查找。
+
+- 如果可以满足的小孩数目小于 $k$，则每个小孩最多能分到的糖果数目小于 $\textit{mid}$，因此在 $[\textit{low}, \textit{mid} - 1]$ 中继续查找。
+
+当 $\textit{low} = \textit{high}$ 时，查找结束，此时 $\textit{low}$ 即为每个小孩最多能分到的糖果数目。
+
+实现方面，由于只需要知道可以满足的小孩数目是否大于等于 $k$，不需要知道可以满足的小孩数目的具体值，因此如果可以满足的小孩数目已经大于等于 $k$，则可以提前返回，不需要计算可以满足的小孩数目的具体值。
+
+## 代码
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public int maximumCandies(int[] candies, long k) {
+        long sum = 0;
+        for (int candy : candies) {
+            sum += candy;
+        }
+        if (sum < k) {
+            return 0;
+        }
+        long low = 1, high = sum / k;
+        while (low < high) {
+            long mid = low + (high - low + 1) / 2;
+            if (canAllocate(candies, k, mid)) {
+                low = mid;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return (int) low;
+    }
+
+    public boolean canAllocate(int[] candies, long k, long numEach) {
+        long count = 0;
+        for (int candy : candies) {
+            count += (long) candy / numEach;
+            if (count >= k) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public int MaximumCandies(int[] candies, long k) {
+        long sum = 0;
+        foreach (int candy in candies) {
+            sum += candy;
+        }
+        if (sum < k) {
+            return 0;
+        }
+        long low = 1, high = sum / k;
+        while (low < high) {
+            long mid = low + (high - low + 1) / 2;
+            if (CanAllocate(candies, k, mid)) {
+                low = mid;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return (int) low;
+    }
+
+    public bool CanAllocate(int[] candies, long k, long numEach) {
+        long count = 0;
+        foreach (int candy in candies) {
+            count += (long) candy / numEach;
+            if (count >= k) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n \log \dfrac{m}{k})$，其中 $n$ 是数组 $\textit{candies}$ 的长度，$m$ 是数组 $\textit{candies}$ 中的元素总和，$k$ 是给定的整数。需要执行 $O(\log \dfrac{m}{k})$ 次二分查找，每次二分查找遍历数组 $\textit{candies}$ 计算可以满足的小孩数目的时间是 $O(n)$，时间复杂度是 $O(n \log \dfrac{m}{k})$。
+
+- 空间复杂度：$O(1)$。
+

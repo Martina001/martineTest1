@@ -1,0 +1,47 @@
+# 方法一：数学
+
+**思路**
+我们可以把数组分为质数和非质数，然后按照有顺序的排列组合去分别放置质数和非质数。
+![image.png](https://pic.leetcode-cn.com/1656565337-zSdVEC-image.png)
+**代码如下**
+
+* 
+
+```
+int mod = (int) (1e9) + 7;
+public int numPrimeArrangements(int n) {
+    int prime = 0;
+    //计算质数的个数
+    for (int i = 2; i <= n; i++) {
+        if (isPrime(i)) {
+            prime++;
+        }
+    }
+    //排列组合相乘
+    return (int) (f(prime) * f(n - prime) % mod);
+}
+//判断是否是质数
+public boolean isPrime(int n) {
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+//计算阶乘
+public long f(int n) {
+    long ans = 1;
+    for (int i = 2; i <= n; i++) {
+        ans = ans * i;
+        ans = ans % mod;
+    }
+    return ans;
+}
+```
+
+**复杂度分析**
+时间复杂度：O(n^(3/2))
+空间复杂度：O(n)
+如果对您有帮助，**记得关注 + 点赞 + 收藏呦！！！**
+**每天都会更新每日一题题解，大家加油！！！**

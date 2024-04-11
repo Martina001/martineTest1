@@ -1,0 +1,28 @@
+# 思路
+
+实际上，我们只需要保证 dp 数组的第一个位置能初始化成 1，根据从左到右，从上到下的遍历顺序，就足够计算路径的数量了
+
+# Code
+
+* []
+
+```Go
+func uniquePathsWithObstacles(obstacleGrid [][]int) int {
+    n, m := len(obstacleGrid), len(obstacleGrid[0])
+    dp := make([][]int, n+1)
+    for i, _ := range dp {
+        dp[i] = make([]int, m+1)
+    }
+    dp[0][1] = 1
+    for i := 1; i <= n; i++ {
+        for j := 1; j <= m; j++ {
+            if obstacleGrid[i-1][j-1] == 1 {
+                continue
+            } 
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        }
+    }
+    return dp[n][m]
+}
+```
+

@@ -1,0 +1,32 @@
+### 解题思路
+
+由于组合只有两种，一种是1个字符，一种是两个字符，故构建一个字典记录所有的罗马数字子串，对字符串进行遍历，如果罗马数字中大的数字在小的数字左边，则加上大数字对应的值；如果罗马数字中小的数字在大的数字左边，则先判断这两个数字组合在字典中是否存在，若存在则减去左边的值，继续遍历，若不存在则说明该罗马数字不符合规则。
+![罗马数字.png](https://pic.leetcode.cn/1678328706-Yzffev-%E7%BD%97%E9%A9%AC%E6%95%B0%E5%AD%97.png)
+
+### 代码
+
+* python3
+
+```python
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        map = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000,'CM':900,'CD':400,'XC':90,'XL':40,'IX':9,'IV':4,}
+        output = 0
+        lens = len(s)
+        if 1 <= len(s) <= 15:
+
+            for i in range(lens-1):
+                if map[s[i]] >=map[s[i+1]]:
+                    output+=map[s[i]]
+                else:
+                    if (s[i]+s[i+1]) in map:
+                        output -= map[s[i]]
+                    else:
+                        return '请输入符合规则的罗马数字'
+            output+=map[s[-1]]
+
+        else:
+            print('请输入长度小于等于15的罗马数字')
+        return output
+```
+

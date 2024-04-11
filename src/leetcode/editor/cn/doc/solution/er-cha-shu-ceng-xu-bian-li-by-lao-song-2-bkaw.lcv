@@ -1,0 +1,154 @@
+> leetcode第[1780. 判断一个数字是否可以表示成三的幂的和](/problems/check-if-number-is-a-sum-of-powers-of-three/):
+>
+> 给你一个整数 n ，如果你可以将 n 表示成若干个不同的三的幂之和，请你返回 true ，否则请返回 false 。
+>
+> 对于一个整数 y ，如果存在整数 x 满足 y == 3x ，我们称这个整数 y 是三的幂。
+
+[toc]
+
+## 思路
+
+首先，计算出所有不超过`n`的3的幂，存入一个列表`list`。list的长度为$\lfloor log_{3}n \rfloor$，也就是以`3`为底对`n`取对数，然后向下取整。
+
+根据题目要求，需要判断`list`中是否存在若干个数的和等于`n`，并且**这些数字不能重复**。
+
+可以不断从`n`中减去一些`list`中的数字，直到变成0，则算法结束，返回`true`。
+
+`list`中的每个数字，都有被`n`减去，或不被`n`减去两种可能，故总共有$2^{\lfloor log_{3}n \rfloor}$种可能性减法。
+
+考察这$2^{\lfloor log_{3}n \rfloor}$种可能性，其实就是遍历二叉树的过程。这颗二叉树第`i - 1`层的任意一个节点`node`，其左节点等于`node`，右节点等于`node - list[i]`；二叉树的根节点等于`n`。
+
+遍历二叉树，有固定的的代码模板。对于这道题，需要注意两点：
+1. 遇到0时，遍历终止，算法返回
+2. 要搞清楚这颗二叉树节点之间的关系，否则头脑会比较混乱
+
+## 代码
+
+### 层序遍历（BFS）
+
+* java
+
+```java
+class Solution {
+    public boolean checkPowersOfThree(int n) {
+        List<Integer> list = new ArrayList<>();
+        for(int x = 1; x <= n; x *= 3)list.add(x);
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(n);
+        for(int x : list){
+            int size = q.size();
+            while(size-- >= 1){
+                int p = q.poll();
+                if(p - x == 0)return true;
+                q.offer(p);
+                q.offer(p - x); 
+            }
+        }
+        return false;
+    }
+}
+```
+
+### DFS(前序、中序、后顺遍历)
+
+* java
+
+```java
+class Solution {
+    public boolean checkPowersOfThree(int n) {
+        List<Integer> list = new ArrayList<>();
+        for(int x = 1; x <= n; x *= 3)list.add(x);
+        return postOrderSearch(list, 0, n);
+    }
+
+    /** 前序遍历*/
+    private boolean preOrderSearch(List<Integer> list, int deep, int node){
+        if(deep >= list.size())return node == 0;
+        int left = node, right = node - list.get(deep);
+        if(node == 0)return true;
+        if(preOrderSearch(list, deep + 1, left))return true;
+        return inOrderSearch(list, deep + 1, right);
+    }
+
+    /** 中序遍历*/
+    private boolean inOrderSearch(List<Integer> list, int deep, int node){
+        if(deep >= list.size())return node == 0;
+        int left = node, right = node - list.get(deep);
+        if(preOrderSearch(list, deep + 1, left))return true;
+        if(node == 0)return true;
+        return preOrderSearch(list, deep + 1, right);
+    }
+
+    /** 后序遍历*/
+    private boolean postOrderSearch(List<Integer> list, int deep, int node){
+        if(deep >= list.size())return node == 0;
+        int left = node, right = node - list.get(deep);
+        if(preOrderSearch(list, deep + 1, left))return true;
+        if(preOrderSearch(list, deep + 1, right))return true;
+        return node == 0;
+    }
+}
+```
+
+## 复杂度
+
+> **时间复杂度**：$O(n^{1/log_{2}3})$。
+
+生成`list`，需要$O(logn)$。最坏情况下，需要遍历二叉树的所有节点。此二叉树总共有$2^m - 1$个节点，其中$m$为树的深度，$m = \lfloor log_{3}n \rfloor$，所以遍历的代价为：
+$$ O(2^m) = O(2^{log_{3}n}) = O(2^{log_{2}n/log_{2}3}) = O(n^{1/log_{2}3}) $$
+
+这是一个根式幂，渐进大于$O(log n)$。所以总的时间复杂度为$O(n^{1/log_{2}3})$。这是一个**根式幂阶**的代价，**小于线性阶，大于对数阶**。
+
+> **空间复杂度**：$O(\log n)$（dfs），或者$O(n^{1/log_{2}3})$（bfs）。
+
+对于dfs，递归栈开销和存储`list`，均为$O(\log n)$。对于bfs，最多需要入队所有叶子节点，故需要$O(n^{1/log_{2}3})$的空间。
+
+可见，对于本题，dfs空间消耗更小。
+
+## 总结
+
+比起[官解转换为3进制的骚操作](https://leetcode.cn/problems/check-if-number-is-a-sum-of-powers-of-three/solution/pan-duan-yi-ge-shu-zi-shi-fou-ke-yi-biao-0j5k/)，本解法确实略逊一筹，时间复杂度大于官解的对数阶。反正再过一万年，我也不会想出这种操作🤣
+
+但是本解将问题转换为二叉树遍历，更通用一点，适合我这样的普通大脑。
+
+发现很多问题，其实都可以转换为图论问题（树也是图），比如和本题表面上有点类似的题：[279. 完全平方数](https://leetcode.cn/problems/problems/perfect-squares/)。我第一次知道279题可以转换为图论**最短路径问题**的时候，真的惊呆了。
+
+将陌生的问题，转换为常规算法题，需要比较强的抽象能力，我还不行，需要多练习。
+
+比如今天这道题，我第一眼就想到了279题，但是两道题的相似只是表面的，279题允许重复，而这道题不允许；279题要求的是最值，而这道题要求的却是存在性。因为生搬硬套。我今天在脑海里构建了无数种形态的图，一开始怎么都理不顺，甚至写出了下面这样会超时的代码😓：
+
+* java
+
+```java
+class Solution {
+    public boolean checkPowersOfThree(int n) {
+        Set<Integer> set = new HashSet<>();
+        for(int x = 1; x <= n; x *= 3)set.add(x);
+        Queue<Integer> q = new LinkedList<>();
+        Queue<Set<Integer>> setQ = new LinkedList<>();
+        q.offer(n);
+        setQ.offer(set);
+        while(!q.isEmpty()){
+            int size = q.size();
+            while(size-- >= 1){
+                int p = q.poll();
+                Set<Integer> p1 = setQ.poll();
+                for(int x: p1){
+                    if(p - x == 0)return true;
+                    Set<Integer> newSet = new HashSet<>(p1);
+                    newSet.remove(x);
+                    q.offer(p - x);
+                    setQ.offer(newSet);                  
+                }
+                
+            }
+        }
+        return false;
+    }
+}
+```
+
+这个版本的思路是：BFS一张图，图的顶点值是从`n`中减掉若干个3的幂，顶点的**出边**指向从自身减掉任意一个3的幂形成的新顶点。这张图，**和前文中的二叉树的顶点数是一样的，但是会形成更多的边**，所以超时。
+
+可见，合适的抽象，真的很重要。
+

@@ -1,0 +1,23 @@
+* 
+
+```
+class Solution {
+  public String reverseWords(String s) {
+        String[] s1 = s.split(" ");
+        StringBuilder stringBuilder1 = new StringBuilder();
+        for (int i = 0; i < s1.length ;i++) {
+            StringBuilder stringBuilder = new StringBuilder(s1[i]);
+            stringBuilder1.append(stringBuilder.reverse());
+            if(i!= s1.length-1){
+                stringBuilder1.append(" ");
+            }
+        }
+        return stringBuilder1.toString();
+    }
+}
+```
+
+split()用于以空格分隔，reverse()用于反转
+不用StringBuffer是因为没有线程安全考虑的情况下，StringBuilder明显快的多，字符串原地修改是最慢的，StringBuffer其次。
+![LeetCode02.png](https://pic.leetcode.cn/1673338724-KhMdyy-LeetCode02.png)
+

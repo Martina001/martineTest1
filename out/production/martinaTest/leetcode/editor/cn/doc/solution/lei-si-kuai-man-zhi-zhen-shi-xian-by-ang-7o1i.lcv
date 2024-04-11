@@ -1,0 +1,40 @@
+> Problem: [26. 删除有序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/)
+
+[TOC]
+
+# 思路
+
+> 也有点像快速排序的思路
+
+# 解题方法
+
+> 遍历数组时，把每个数放入临时变量，如果与上一个不一样，放入当前慢指针的位置、慢指针前移
+
+# Code
+
+* []
+
+```C++
+
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+
+        int tmp = -20000;
+        int pos = 0;
+        for(int i=0;i<nums.size();i++)
+        {
+            int n = nums[i];
+            if(n!=tmp)
+            {
+                nums[pos] = n;
+                pos++;
+                tmp = n; 
+            }
+                       
+        }
+        return pos;
+    }
+};
+```
+

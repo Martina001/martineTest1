@@ -1,0 +1,204 @@
+![](https://pic.leetcode-cn.com/1647179429-OaYxub-%E5%9B%BE%E7%89%87.png)
+
+# 方法一、DFS
+
+这道题比较简单，题目已经给出了关键词“层”，那我们应该联想到 **层序遍历**，通常来说，我们可以使用 BFS 来做层序遍历，但是，今天这道题也可以使用DFS来求解。
+
+我们只需要记录一个全局的List记录每层元素之和即可，使用DFS时，对于遍历的每一个元素都加入到对应的List的下标（下标即层级）中。
+
+请看代码：
+
+* java
+
+```java
+class Solution {
+    public int maxLevelSum(TreeNode root) {
+        // 记录每层元素之和
+        List<Integer> levelSum = new ArrayList<>();
+        dfs(levelSum, root, 0);
+
+        // 整理结果
+        int max = Integer.MIN_VALUE;
+        int ans = -1;
+        for (int i = 0; i < levelSum.size(); i++) {
+            if (levelSum.get(i) > max) {
+                max = levelSum.get(i);
+                ans = i;
+            }
+        }
+		
+        // 下标是从0开始的，层级是从1开始的
+        return ans + 1;
+    }
+
+    private void dfs(List<Integer> levelSum, TreeNode node, int level) {
+        if (node == null) {
+            return;
+        }
+
+        if (level == levelSum.size()) {
+            levelSum.add(node.val);
+        } else {
+            levelSum.set(level, levelSum.get(level) + node.val);
+        }
+
+        dfs(levelSum, node.left, level + 1);
+        dfs(levelSum, node.right, level + 1);
+    }
+}
+```
+
+- 时间复杂度：$O(n)$。
+- 空间复杂度：$O(n)$。
+
+运行结果：
+
+![图片.png](https://pic.leetcode-cn.com/1659229065-fCxUYI-%E5%9B%BE%E7%89%87.png)
+
+# 方法二、BFS
+
+使用BFS就比较简单了，只要记住BFS的模板往上套即可。
+
+请看代码：
+
+* java
+
+```java
+class Solution {
+    public int maxLevelSum(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        int max = Integer.MIN_VALUE;
+        int ans = -1;
+        int level = 0;
+        while (!queue.isEmpty()) {
+            level++;
+            int size = queue.size();
+            int sum = 0;
+            while (size-- > 0) {
+                TreeNode node = queue.poll();
+                sum += node.val;
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+
+            if (sum > max) {
+                max = sum;
+                ans = level;
+            }
+        }
+
+        return ans;
+    }
+}
+```
+
+- 时间复杂度：$O(n)$。
+- 空间复杂度：$O(n)$。
+
+运行结果：
+
+![图片.png](https://pic.leetcode-cn.com/1659229053-SYDJaU-%E5%9B%BE%E7%89%87.png)
+
+# 方法三、自定义队列
+
+今天这道题的数据范围最多只有 10000 个节点，所以，我们也可以使用自定义队列来求解，以加快速度。
+
+请看代码：
+
+* java
+
+```java
+class Solution {
+    public int maxLevelSum(TreeNode root) {
+        TreeNode[] queue = new TreeNode[10001];
+        int offerIndex = 0, pollIndex = 0;
+        queue[offerIndex++] = root;
+
+        int max = Integer.MIN_VALUE;
+        int ans = -1;
+        int level = 0;
+        while (offerIndex != pollIndex) {
+            level++;
+            int size = offerIndex - pollIndex;
+            int sum = 0;
+            while (size-- > 0) {
+                TreeNode node = queue[pollIndex++];
+                sum += node.val;
+                if (node.left != null) queue[offerIndex++] = node.left;
+                if (node.right != null) queue[offerIndex++] = node.right;
+            }
+
+            if (sum > max) {
+                max = sum;
+                ans = level;
+            }
+        }
+
+        return ans;
+    }
+}
+```
+
+- 时间复杂度：$O(n)$。
+- 空间复杂度：$O(C)$，C 固定为 10001。
+
+运行结果：
+
+![图片.png](https://pic.leetcode-cn.com/1659229038-KanPAL-%E5%9B%BE%E7%89%87.png)
+
+# 方法四、使用递归实现层序遍历
+
+除了使用队列来实现层序遍历，我们也可以使用递归实现，请看代码：
+
+* java
+
+```java
+class Solution {
+    int max = Integer.MIN_VALUE;
+    int ans = -1;
+
+    public int maxLevelSum(TreeNode root) {
+        levelTraverse(1, 1, root);
+        return ans;
+    }
+
+    // 注意这里size的使用
+    private void levelTraverse(int level, int size, TreeNode...nodes) {
+        if (size == 0) {
+            return;
+        }
+
+        int sum = 0;
+        TreeNode[] nextNodes = new TreeNode[size << 1];
+        int nextSize = 0;
+        for (int i = 0; i < size; i++) {
+            TreeNode node = nodes[i];
+            sum += node.val;
+            if (node.left != null) nextNodes[nextSize++] = node.left;
+            if (node.right != null) nextNodes[nextSize++] = node.right;
+        }
+
+        if (sum > max) {
+            max = sum;
+            ans = level;
+        }
+
+        levelTraverse(level + 1, nextSize, nextNodes);
+    }
+}
+```
+
+- 时间复杂度：$O(n)$。
+- 空间复杂度：$O(n + h)$，h 为树高，每一层不超过 n 个元素，即 nextNodes 占用的空间。
+
+运行结果：
+
+![图片.png](https://pic.leetcode-cn.com/1659229012-nsJOxI-%E5%9B%BE%E7%89%87.png)
+
+# 最后
+
+**如果对你有帮助，请点个赞吧，谢谢^^**
+
+欢迎关注公号『彤哥来刷题啦』，也欢迎在 leetcode 上[『关注我』](https://leetcode-cn.com/u/tong-zhu/)或者[『点我加V』](https://img.oicoding.cn/img/image-20220127105632802.png)，我拉你进『刷题群』，每日分享通俗易懂的高质量题解~

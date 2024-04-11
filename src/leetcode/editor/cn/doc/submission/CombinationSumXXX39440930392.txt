@@ -1,0 +1,40 @@
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        if(null == candidates || candidates.length == 0) return res;
+//        Arrays.sort(candidates);
+//        traverse(candidates,new ArrayList<>(),0,0,target);
+        traverse(candidates,new ArrayList<>(),0,target);
+        return res;
+    }
+
+    /*private void traverse(int[] nums,List<Integer> track ,int start,int tempSum,int sum){
+        if(tempSum >=sum){
+            if(tempSum == sum){
+                res.add(new ArrayList<>(track));
+            }
+            return;
+        }
+        for(int i = start;i<nums.length;i++){
+            track.add(nums[i]);
+            traverse(nums,track,i,tempSum+nums[i],sum);
+            track.remove(track.size()-1);
+        }
+    }*/
+    private void traverse(int[] nums,List<Integer> track ,int start,int tempSum){
+        if(tempSum <=0){
+            if(tempSum == 0){
+                res.add(new ArrayList<>(track));
+            }
+            return;
+        }
+        for(int i = start;i<nums.length;i++){
+            track.add(nums[i]);
+            traverse(nums,track,i,tempSum-nums[i]);
+            track.remove(track.size()-1);
+        }
+    }
+}
+
+//runtime:2 ms
+//memory:42.3 MB

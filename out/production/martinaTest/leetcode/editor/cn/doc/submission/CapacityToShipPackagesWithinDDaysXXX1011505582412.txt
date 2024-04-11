@@ -1,0 +1,42 @@
+class Solution {
+//    传送带上的包裹必须在 days 天内从一个港口运送到另一个港口。
+//    传送带上的第 i 个包裹的重量为 weights[i]。每一天，我们都会按给出重量（weights）的顺序往传送带上装载包裹。
+//    我们装载的重量不会超过船的最大运载重量。
+//    返回能在 days 天内将传送带上的所有包裹送达的船的最低运载能力。
+    public int shipWithinDays(int[] weights, int days) {
+        // 这是个经典的二分查找最值的问题，要求的就是day<=days时船运载重量的最大值，
+        // 我们可以知道船运载重量最小值是weights的最大值，最大值是weights的sum值
+        // 然后在此范围内找出day不大于days时运载重量的最小值即可，即二分查找取最小，所以返回left
+        // 对应410题，分割数组的最大值
+        int minRes = Arrays.stream(weights).max().getAsInt();
+        int start = minRes;
+        int end = Arrays.stream(weights).sum()+1;
+        while(start<end){
+            int mid = (end-start)/2+start;
+            int day = getDay(weights,mid);
+            //day小了，说明此时mid大了，往左边区域找
+            if(day <= days){
+                end = mid;
+            }else{
+                start = mid+1;
+            }
+        }
+        return start;
+    }
+    private int getDay(int w[],int weight){
+        int sum = 0;
+        int day =1;
+        for(int i = 0;i<w.length;i++){
+            // sum + w[i] == weight的时候还可以继续下一个循环所以这里不要写成>=
+            if(sum + w[i]>weight){
+                day++;
+                sum = 0;
+            }
+            sum += w[i];
+        }
+        return day;
+    }
+}
+
+//runtime:15 ms
+//memory:46.2 MB

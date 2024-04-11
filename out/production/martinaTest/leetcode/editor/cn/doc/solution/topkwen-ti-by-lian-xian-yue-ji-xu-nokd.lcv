@@ -1,0 +1,51 @@
+> Problem: [215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/description/)
+
+[TOC]
+
+# 思路
+
+1. **初始化小堆**：首先，创建一个最小堆`pq`，并将数组`nums`的前`k`个元素加入堆中。由于堆是一种特殊的完全二叉树，其中每个节点的值都小于或等于其子节点的值（在最小堆中），因此堆顶元素（`pq.top()`）就是当前堆中的最小元素。
+2. **遍历数组**：从第`k`个元素开始遍历数组`nums`。对于每个元素`nums[i]`，如果它大于堆顶元素（即第`k`大的数），则将堆顶元素弹出，并将`nums[i]`加入堆中。这一步确保了堆中始终保持着数组中最小的`k`个数。
+3. **返回结果**：遍历结束后，堆顶元素就是数组中第`k`大的数，将其返回。
+
+# 解题方法
+
+* **数据结构**：使用`priority_queue`（优先队列）来实现最小堆。`priority_queue`是一个模板类，需要传入三个模板参数：元素类型、底层容器类型、比较函数。这里使用`vector<int>`作为底层容器，`greater<int>`作为比较函数，以构建最小堆。
+* **算法逻辑**：通过初始化小堆、遍历数组、维护堆的操作，实现了找到第`k`大元素的目标。
+
+# 复杂度
+
+时间复杂度:
+* **初始化小堆**：`O(k log k)`，其中`k`是堆的大小。这是因为要将`k`个元素插入堆中，每次插入的时间复杂度是`O(log k)`。
+* **遍历数组**：`O((n - k) log k)`，其中`n`是数组`nums`的大小。这是因为要对`n - k`个元素进行比较和可能的插入/删除操作，每次操作的时间复杂度是`O(log k)`。
+* **总时间复杂度**：`O(n log k)`，其中`n`是数组`nums`的大小。
+
+空间复杂度:
+* **空间复杂度**：`O(k)`，因为使用了大小为`k`的最小堆来存储数组中最小的`k`个数。
+
+# Code
+
+* []
+
+```C++
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        // 建 k 个数的小堆 --- TOPK问题
+        priority_queue<int,vector<int>,greater<int>> pq(nums.begin(),nums.begin()+k);
+
+        for(int i = k;i < nums.size();i++)
+        {
+            if(nums[i] > pq.top())
+            {
+                pq.pop();
+                pq.push(nums[i]);
+            }
+        }
+
+        return pq.top();
+    }
+};
+
+```
+

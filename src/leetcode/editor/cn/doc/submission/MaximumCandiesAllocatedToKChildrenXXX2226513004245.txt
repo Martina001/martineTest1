@@ -1,0 +1,30 @@
+    class Solution {
+        public int maximumCandies(int[] candies, long k) {
+            // 理解题意之后很快就能得出 随着单个堆的数目x增加，拿到x的小孩个数y变小，所以y=f(x)单调减，使用二分法非常快速
+            // 要求最大x，也就是右边界
+            // 关注点在于 每次得到的mid值是要去被nums[i]除的，0不能做除数，所以左边界要从1开始，right为最大值+1，最后right-1
+            int left = 1, right = 1+Arrays.stream(candies).max().getAsInt();
+            while (left < right) {
+                int mid = (right - left) / 2 + left;
+                long childNum = getChildNum(candies, mid);
+                if (childNum >= k) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+            return right-1;
+        }
+
+        private long getChildNum(int[] nums, int targetNum) {
+            // 备注 这里一定要是long。int会溢出 结果就不对了
+            long res = 0;
+            for (int num : nums) {
+                res += num / targetNum;
+            }
+            return res;
+        }
+    }
+
+//runtime:28 ms
+//memory:62.2 MB

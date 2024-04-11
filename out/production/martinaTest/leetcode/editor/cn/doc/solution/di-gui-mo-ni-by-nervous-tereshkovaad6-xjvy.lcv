@@ -1,0 +1,25 @@
+> Problem: [1306. 跳跃游戏 III](https://leetcode.cn/problems/jump-game-iii/description/)
+
+[TOC]
+
+# 思路
+
+> 一个位置会产生左右两个选择，取或即为答案
+
+# Code
+
+* []
+
+```C++
+class Solution {
+public:
+    bool canReach(vector<int>& arr, int start) {
+        if(start>=arr.size()||start<0||arr[start]==-1)  return false;
+        if(arr[start]==0)   return true;
+        int cur=arr[start];
+        arr[start]=-1;
+        return canReach(arr,start+cur)||canReach(arr,start-cur);
+    }
+};
+```
+

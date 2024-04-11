@@ -1,0 +1,119 @@
+# 解法
+
+## 思路和算法
+
+如果列车的速度大于等于最小时速，则一定可以准时到达；如果列车的速度小于最小时速，则一定不能准时到达。因此，这道题是二分查找判定问题，需要找到最小时速。
+
+用 $\textit{low}$ 和 $\textit{high}$ 分别表示二分查找的下界和上界。由于列车的时速至少是 $1$ 千米，因此 $\textit{low}$ 的初始值等于 $1$；由于最小时速不超过 $10^7$ 千米，因此 $\textit{high}$ 的初始值等于 $10^7$。
+
+数组 $\textit{dist}$ 的长度是 $n$，表示 $n$ 趟列车的形式距离。当列车的时速是 $\textit{speed}$ 千米时，第 $i$ 趟列车的行驶时间是 $\dfrac{\textit{dist}[i]}{\textit{speed}}$。除了最后一趟列车以外，其余每一趟列车到站之后都要等到下个整点才能乘到下一趟列车，需要将等待下一趟列车的时间计入当前列车的时间，因此第 $i$ 趟列车的时间计算如下。
+
+- 当 $i < n - 1$ 时，第 $i$ 趟列车的时间是 $\Big\lceil \dfrac{\textit{dist}[i]}{\textit{speed}} \Big\rceil$。
+
+- 当 $i = n - 1$ 时，第 $i$ 趟列车的时间是 $\dfrac{\textit{dist}[i]}{\textit{speed}}$。
+
+判断 $n$ 趟列车的时间总和是否小于等于 $\textit{hour}$，即可判断时速 $\textit{speed}$ 是否大于等于最小时速。
+
+每次查找时，取 $\textit{mid}$ 为 $\textit{low}$ 和 $\textit{high}$ 的平均数向下取整，将 $\textit{mid}$ 作为列车的时速，判断 $n$ 趟列车的时间总和是否小于等于 $\textit{hour}$，执行如下操作。
+
+- 如果 $n$ 趟列车的时间总和小于等于 $\textit{hour}$，则最小时速小于等于 $\textit{mid}$，因此在 $[\textit{low}, \textit{mid}]$ 中继续查找。
+
+- 如果 $n$ 趟列车的时间总和大于 $\textit{hour}$，则最小时速大于 $\textit{mid}$，因此在 $[\textit{mid} + 1, \textit{high}]$ 中继续查找。
+
+当 $\textit{low} = \textit{high}$ 时，查找结束，此时 $\textit{low}$ 即为最小时速。
+
+实现方面有以下两点说明之处。
+
+1. 给定的时间上限 $\textit{hour}$ 是浮点数，小数点后最多存在两位数字。为了避免浮点数误差，可以计算 $\textit{newHour}$ 为最接近 $\textit{hour} \times 100$ 的整数，计算每趟列车的时间也需要乘以 $100$，判断 $n$ 趟列车的时间总和是否小于等于 $\textit{newHour}$。计算每趟列车的时间的具体方法如下。
+
+   - 当 $i < n - 1$ 时，第 $i$ 趟列车的时间是 $\Big\lceil \dfrac{\textit{dist}[i]}{\textit{speed}} \Big\rceil \times 100 = (\Big\lceil \dfrac{\textit{dist}[i] - 1}{\textit{speed}} \Big\rceil + 1) \times 100$。
+
+   - 当 $i = n - 1$ 时，第 $i$ 趟列车的时间是 $\Big\lceil \dfrac{\textit{dist}[i] \times 100}{\textit{speed}} \Big\rceil = \Big\lfloor \dfrac{\textit{dist}[i] \times 100 - 1}{\textit{speed}} \Big\rfloor + 1$。
+2. 判断 $n$ 趟列车的时间总和是否小于等于 $\textit{newHour}$ 时，如果遍历尚未结束，时间总和就已经大于 $\textit{newHour}$，则 $n$ 趟列车的时间总和一定大于 $\textit{newHour}$，此时可以提前返回，不需要计算 $n$ 趟列车的时间总和。
+
+## 代码
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    static final int FACTOR = 100;
+    static final int UPPER_BOUND = 10000000;
+
+    public int minSpeedOnTime(int[] dist, double hour) {
+        long newHour = Math.round(hour * FACTOR);
+        if (!canArrive(dist, newHour, UPPER_BOUND)) {
+            return -1;
+        }
+        int low = 1, high = UPPER_BOUND;
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (canArrive(dist, newHour, mid)) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+
+    public boolean canArrive(int[] dist, long hour, int speed) {
+        long totalTime = 0;
+        int n = dist.length;
+        for (int i = 0; i < n; i++) {
+            int time = i < n - 1 ? ((dist[i] - 1) / speed + 1) * FACTOR : (dist[i] * FACTOR - 1) / speed + 1;
+            totalTime += time;
+            if (totalTime > hour) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    const int FACTOR = 100;
+    const int UPPER_BOUND = 10000000;
+
+    public int MinSpeedOnTime(int[] dist, double hour) {
+        long newHour = (long) Math.Round(hour * FACTOR);
+        if (!CanArrive(dist, newHour, UPPER_BOUND)) {
+            return -1;
+        }
+        int low = 1, high = UPPER_BOUND;
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (CanArrive(dist, newHour, mid)) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+
+    public bool CanArrive(int[] dist, long hour, int speed) {
+        long totalTime = 0;
+        int n = dist.Length;
+        for (int i = 0; i < n; i++) {
+            int time = i < n - 1 ? ((dist[i] - 1) / speed + 1) * FACTOR : (dist[i] * FACTOR - 1) / speed + 1;
+            totalTime += time;
+            if (totalTime > hour) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n \log m)$，其中 $n$ 是数组 $\textit{dist}$ 的长度，$m$ 是列车时速的上限，$m = 10^7$。需要执行 $O(\log m)$ 次二分查找，每次二分查找遍历数组 $\textit{dist}$ 并计算 $n$ 趟列车的时间总和的时间是 $O(n)$，因此时间复杂度是 $O(n \log m)$。
+
+- 空间复杂度：$O(1)$。
+

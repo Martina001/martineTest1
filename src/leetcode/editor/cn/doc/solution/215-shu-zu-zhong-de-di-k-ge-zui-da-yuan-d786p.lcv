@@ -1,0 +1,178 @@
+## 方法一：排序
+
+使用编程语言的内置排序算法对数组 `nums` 进行排序，然后返回第 $N - k$ 个元素即可。
+
+* []
+
+```Python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        return sorted(nums)[len(nums) - k]
+```
+
+* []
+
+```Java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        Arrays.sort(nums);
+        return nums[nums.length - k];
+    }
+}
+```
+
+* []
+
+```C++
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        return nums[nums.size() - k];
+    }
+};
+```
+
+### 复杂度分析：
+
+- **时间复杂度 $O(N \log N)$ ：** 其中 $N$ 为数组元素数量。
+- **空间复杂度：** 取决于内置排序算法的具体设计。
+
+## 方法二：快速选择
+
+快速排序的核心包括“哨兵划分” 和 “递归” 。
+
+- **哨兵划分：** 以数组某个元素（一般选取首元素）为基准数，将所有小于基准数的元素移动至其左边，大于基准数的元素移动至其右边。
+- **递归：** 对 **左子数组** 和 **右子数组** 递归执行 **哨兵划分**，直至子数组长度为 1 时终止递归，即可完成对整个数组的排序。
+
+下图展示了数组 `[2,4,1,0,3,5]` 的快速排序流程。
+
+![Picture1.png](https://pic.leetcode-cn.com/1612615552-rifQwI-Picture1.png)
+
+**「快速选择」**：设 $N$ 为数组长度。根据快速排序原理，如果某次哨兵划分后，**基准数的索引正好是 $N-k$ ，则意味着它就是第 $k$ 大的数字** 。此时就可以直接返回它，无需继续递归下去了。
+
+然而，对于包含大量重复元素的数组，每轮的哨兵划分都可能将数组划分为长度为 $1$ 和 $n-1$ 的两个部分，**这种情况下快速排序的时间复杂度会退化至 $O(N^2)$** 。
+
+一种解决方案是使用「三路划分」，即每轮将数组划分为三个部分：**小于、等于和大于基准数的所有元素**。这样当发现第 $k$ 大数字处在“等于基准数”的子数组中时，便可以直接返回该元素。
+
+为了进一步提升算法的稳健性，我们采用随机选择的方式来选定基准数。
+
+### 代码：
+
+* []
+
+```Python
+class Solution:
+    def findKthLargest(self, nums, k):
+        def quick_select(nums, k):
+            # 随机选择基准数
+            pivot = random.choice(nums)
+            big, equal, small = [], [], []
+            # 将大于、小于、等于 pivot 的元素划分至 big, small, equal 中
+            for num in nums:
+                if num > pivot:
+                    big.append(num)
+                elif num < pivot:
+                    small.append(num)
+                else:
+                    equal.append(num)
+            if k <= len(big):
+                # 第 k 大元素在 big 中，递归划分
+                return quick_select(big, k)
+            if len(nums) - len(small) < k:
+                # 第 k 大元素在 small 中，递归划分
+                return quick_select(small, k - len(nums) + len(small))
+            # 第 k 大元素在 equal 中，直接返回 pivot
+            return pivot
+        
+        return quick_select(nums, k)
+```
+
+* []
+
+```Java
+public class Solution {
+    private int quickSelect(List<Integer> nums, int k) {
+        // 随机选择基准数
+        Random rand = new Random();
+        int pivot = nums.get(rand.nextInt(nums.size()));
+        // 将大于、小于、等于 pivot 的元素划分至 big, small, equal 中
+        List<Integer> big = new ArrayList<>();
+        List<Integer> equal = new ArrayList<>();
+        List<Integer> small = new ArrayList<>();
+        for (int num : nums) {
+            if (num > pivot)
+                big.add(num);
+            else if (num < pivot)
+                small.add(num);
+            else
+                equal.add(num);
+        }
+        // 第 k 大元素在 big 中，递归划分
+        if (k <= big.size())
+            return quickSelect(big, k);
+        // 第 k 大元素在 small 中，递归划分
+        if (nums.size() - small.size() < k)
+            return quickSelect(small, k - nums.size() + small.size());
+        // 第 k 大元素在 equal 中，直接返回 pivot
+        return pivot;
+    }
+    
+    public int findKthLargest(int[] nums, int k) {
+        List<Integer> numList = new ArrayList<>();
+        for (int num : nums) {
+            numList.add(num);
+        }
+        return quickSelect(numList, k);
+    }
+}
+```
+
+* []
+
+```C++
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        return quickSelect(nums, k);
+    }
+    
+private:
+    int quickSelect(vector<int>& nums, int k) {
+        // 随机选择基准数
+        int pivot = nums[rand() % nums.size()];
+        // 将大于、小于、等于 pivot 的元素划分至 big, small, equal 中
+        vector<int> big, equal, small;
+        for (int num : nums) {
+            if (num > pivot)
+                big.push_back(num);
+            else if (num < pivot)
+                small.push_back(num);
+            else
+                equal.push_back(num);
+        }
+        // 第 k 大元素在 big 中，递归划分
+        if (k <= big.size())
+            return quickSelect(big, k);
+        // 第 k 大元素在 small 中，递归划分
+        if (nums.size() - small.size() < k)
+            return quickSelect(small, k - nums.size() + small.size());
+        // 第 k 大元素在 equal 中，直接返回 pivot
+        return pivot;
+    }
+};
+```
+
+### 复杂度分析：
+
+- **时间复杂度 $O(N)$ ：** 其中 $N$ 为数组元素数量。
+  - 对于长度为 $N$ 的数组执行哨兵划分操作的时间复杂度为 $O(N)$ 。
+  - 每轮哨兵划分后，向下递归子数组的平均长度为 $\frac{N}{2}$ 。
+  - 因此平均情况下，哨兵划分操作一共有 $N + \frac{N}{2} + \frac{N}{4} + ... + \frac{N}{N} = \frac{N - \frac{1}{2}}{1 - \frac{1}{2}} = 2N - 1$ （等比数列求和），复杂度为 $O(N)$ 。
+- **空间复杂度 $O(\log N)$ ：** 划分函数的平均递归深度为 $O(\log N)$ 。
+
+---
+
+[![link](https://pic.leetcode.cn/1692032516-LSqzdC-760_100_3.png)](https://leetcode.cn/studyplan/selected-coding-interview/)
+
+本学习计划配有代码仓，内含测试样例与数据结构封装，便于本地调试。可前往我的[个人主页](https://leetcode.cn/u/jyd/)获取。

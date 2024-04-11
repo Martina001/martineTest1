@@ -1,0 +1,1 @@
+根据 Chernoff bound，汤 B 先分配完的概率约为 $e^{-\Theta(n)}$。记精度要求为 $\varepsilon$，只需算到 $n=O(\log \frac{1}{\varepsilon})$ 即可，对于更大的 $n$ 可以直接返回 1。

@@ -1,0 +1,15 @@
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer,Integer> ht = new HashMap<Integer,Integer>();
+        for(int i =0;i<nums.length;i++){
+            if(ht.containsKey(target-nums[i])){
+                return new int[]{ht.get(target-nums[i]),i};
+            }
+            ht.put(nums[i],i);
+        }
+        return new int[0];
+    }
+}
+
+//runtime:2 ms
+//memory:42 MB

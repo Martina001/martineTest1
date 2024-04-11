@@ -1,0 +1,39 @@
+## 解法：枚举
+
+我们重新整理一下题意：给定两个数组 `arr1` 和 `arr2`，问是否存在一个数 `x`，使得 `x` 同时是 `arr1` 和 `arr2` 中某个数的前缀。求 `x` 的最大长度。
+
+一个数 $t$ 共有 $\mathcal{O}(\log t)$ 个前缀，因此 `arr1` 和 `arr2` 的前缀总数是 $\mathcal{O}(n\log X)$ 的，我们可以把所有前缀都预处理出来。
+
+令 `pre1` 是保存了 `arr1` 中所有前缀的数组，`pre2` 是保存了 `arr2` 中所有前缀的数组，问题变为：是否存在一个数 `x`，使得 `x` 同时在 `pre1` 和 `pre2` 中出现过。求 `x` 的最大长度。
+
+这个问题就非常经典了，我们用哈希表保存 `pre2` 里的所有元素，然后枚举 `pre1` 里的所有元素，看它是否在哈希表中即可。
+
+复杂度 $\mathcal{O}(n\log X)$，其中 $X = 10^8$。
+
+## 参考代码（c++）
+
+* c++
+
+```c++
+class Solution {
+public:
+    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
+        // 把 arr2 的所有前缀放入哈希表
+        unordered_set<int> st;
+        for (int x : arr2) for (int y = x; y; y /= 10) st.insert(y);
+        int ans = 0;
+        // 枚举 arr1 中的所有前缀
+        for (int x : arr1) {
+            int len = 0;
+            for (int y = x; y; y /= 10) len++;
+            for (int y = x; y; y /= 10) {
+                // 查哈希表
+                if (st.count(y)) ans = max(ans, len);
+                len--;
+            }
+        }
+        return ans;
+    }
+};
+```
+

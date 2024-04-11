@@ -1,0 +1,97 @@
+class Solution {
+    // dp[i][j]表示前i个包，承重j个物品的方案数 那么dp[i][j] = dp[i-1][j] + dp[i-1][j-val]
+    // 所以dfs的定义也可以直接给两个入参，n和amt 备忘录一定也是这个定义，memo[i][j]作为dfs的返回结果
+    public int change(int amount, int[] coins) {
+        int[][] memo =new int[coins.length][amount+1];
+        for(int i =0;i<coins.length;i++){
+            Arrays.fill(memo[i],-1);
+        }
+        return dfs(amount,coins.length-1,coins,memo);
+    }
+    private int dfs(int amt,int n,int coins[],int[][] memo){
+        if(n<0){
+            if(amt == 0) return 1;
+            else{
+                return 0;
+            }
+        }
+        if(memo[n][amt] != -1){
+            return memo[n][amt];
+        }
+        int val = coins[n];
+        if(amt>=val){
+            // 注意这里不是dfs(amt-val,n-1,coins,memo) 【使用当前这个硬币】+ dfs(amt,n-1,coins,memo)【不使用当前这个硬币】 ;
+            // 使用当前硬币的情况应该为 dfs(amt-val,n,coins,memo) 因为硬币可复选，如果选了当前，依然是前n个硬币可被选，凑处amt-val的值
+            memo[n][amt]= dfs(amt-val,n,coins,memo) + dfs(amt,n-1,coins,memo) ;
+        }else{
+            memo[n][amt]= dfs(amt,n-1,coins,memo);
+        }
+        return memo[n][amt];
+    }
+
+    private int changeDp(int [] coins,int amount){
+        // 我们再写一下直接dp的情况
+        int  n = coins.length;
+        int dp[][] = new int[n-1][amount+1];
+        for(int i =0;i<n;i++){
+            dp[i][0] =1;
+        }
+        for(int i = 1;i<n;i++){
+            for(int j = 1;j<=amount;j++){
+                int val = coins[i];
+                if(j>=val){
+                    dp[i][j] = dp[i-1][j] + dp[i][j-val];
+                }
+            }
+        }
+        return dp[n-1][amount];
+    }
+
+    // 压缩空间
+    private int changeDp1(int [] coins,int amount){
+        // 我们再写一下直接dp的情况
+        int  n = coins.length;
+        int dp[] = new int[amount+1];
+        dp[0] =1;
+        for(int i = 1;i<n;i++){
+            for(int j = 1;j<=amount;j++){
+                int val = coins[i];
+                if(j>=val){
+                    dp[j] = dp[j] + dp[j-val];
+                }
+            }
+        }
+        return dp[amount];
+    }
+   /* public int change(int amount, int[] coins) {
+        boolean memo[] = new boolean[amount+1];
+        dfs(amount,coins,*//*new LinkedList<>(),*//*0,memo);
+        return res;
+    }
+
+    int res =0;
+    List<LinkedList<Integer>> list =new ArrayList<>();
+
+    private boolean dfs(int amount,int []coins,*//*LinkedList<Integer> track,*//*int start,boolean[] memo){
+        if(amount<0)return false;
+        if(memo[amount]){
+            res ++;
+            return true;
+        }
+        if(amount == 0) {
+            res ++;
+//            list.add(new LinkedList<>(track));
+            return true;
+        }
+        for(int i = start;i<coins.length;i++){
+            int val = coins[i];
+//            track.addLast(val);
+                memo[amount] =dfs(amount-val,coins,*//*track,*//*i,memo);
+//            track.removeLast();
+        }
+        return memo[amount];
+    }*/
+}
+
+//runtime:5 ms
+//memory:46.9 MB

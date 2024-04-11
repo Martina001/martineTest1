@@ -1,0 +1,56 @@
+# Code
+
+* []
+
+```C++
+class Solution {
+public:
+    void dfs(vector<int>& nums,int index,int sum)
+    {
+        if(sum>_target) return;
+        if(sum==_target) 
+        {
+            ret.push_back(path);
+            return;
+        }        
+        
+        int n=nums.size();
+        for(int i=index-1;i<n;i++)
+        {
+            if(sum+nums[i]>_target) return;
+            if(hash[nums[i]]>0)
+            {
+                path.push_back(nums[i]);hash[nums[i]]--;
+                dfs(nums,i+1,sum+nums[i]);
+                path.pop_back();hash[nums[i]]++;
+            }
+            
+        }
+
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) 
+    {
+
+        sort(candidates.begin(),candidates.end());
+        vector<int> nums;
+        nums.push_back(candidates[0]);
+        for(auto x : candidates) 
+        {
+            hash[x]++;
+            if(nums[nums.size()-1]!=x) nums.push_back(x);
+        }
+        _target=target;
+        dfs(nums,1,0);
+
+
+        return ret;
+    }
+
+    vector<vector<int>> ret;
+    vector<int> path;
+    int hash[51]={0};
+    int _target;
+};
+```
+

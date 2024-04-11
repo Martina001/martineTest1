@@ -1,0 +1,105 @@
+### 代码
+
+BFS:
+
+* java
+
+```java
+class Solution {
+    public int maxLevelSum(TreeNode root) {
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        int maxSum = Integer.MIN_VALUE;
+        int maxLevel = 1;
+        int level = 1;
+        while (!queue.isEmpty()) {
+            int sum = 0;
+            int n = queue.size();
+            while (n-- > 0) {
+                TreeNode node = queue.poll();
+                sum += node.val;
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            if (sum > maxSum) {
+                maxSum = sum;
+                maxLevel = level;
+            }
+            level++;
+        }
+        return maxLevel;
+    }
+}
+```
+
+DFS
+
+* java
+
+```java
+class Solution {
+    public int maxLevelSum(TreeNode root) {
+        List<Integer> sumList = new ArrayList<>();
+        dfs(root, sumList, 0);
+        int max = 0;
+        for (int i = 1; i < sumList.size(); i++) {
+            if (sumList.get(i) > sumList.get(max)) {
+                max = i;
+            }
+        }
+        return max + 1;
+    }
+
+    private void dfs(TreeNode root, List<Integer> sumList, int level) {
+        if (root == null) {
+            return;
+        }
+        if (sumList.size() <= level) {
+            sumList.add(root.val);
+        } else {
+            sumList.set(level, sumList.get(level) + root.val);
+        }
+        dfs(root.left, sumList, ++level);
+        dfs(root.right, sumList, level);
+    }
+}
+```
+
+DFS使用数组，效率更高
+
+* java
+
+```java
+class Solution {
+    public int maxLevelSum(TreeNode root) {
+        //树节点10^4个，有可能节点都在一边，深度给够
+        int[] sumArr = new int[10001];
+        dfs(root, sumArr, 1);
+        int max = 1;
+        for (int i = 2; i <= sumArr[0]; i++) {
+            if (sumArr[i] > sumArr[max]) {
+                max = i;
+            }
+        }
+        return max;
+    }
+
+    private void dfs(TreeNode node, int[] sumArr, int level) {
+        if (node == null) {
+            return;
+        }
+        //0位存放深度
+        if (sumArr[0] < level) {
+            sumArr[0] = level;
+        }
+        sumArr[level++] += node.val;
+        dfs(node.left, sumArr, level);
+        dfs(node.right, sumArr, level);
+    }
+}
+```
+

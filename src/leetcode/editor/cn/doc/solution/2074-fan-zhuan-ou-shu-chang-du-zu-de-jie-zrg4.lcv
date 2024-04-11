@@ -1,0 +1,102 @@
+# 解法
+
+## 思路和算法
+
+这道题要求将给定的列表按长度递增顺序分组，并将偶数长度组的结点反转。
+
+由于链表的头结点 $\textit{head}$ 在第一组，第一组的结点数是 $1$，不会反转，因此反转后的链表的头结点仍是 $\textit{head}$，需要从第二个结点开始计算分组与执行反转。
+
+用 $\textit{node}$ 表示当前结点，用 $\textit{groupSize}$ 表示分组的预期长度，初始时 $\textit{node} = \textit{head}$，$\textit{groupSize} = 2$。对于每个分组，用 $\textit{beforeGroup}$ 表示分组首结点的前一个结点，用 $\textit{start}$ 表示分组首结点，用 $\textit{last}$ 表示分组末结点，用 $\textit{afterGroup}$ 表示分组末结点的后一个结点，则 $\textit{beforeGroup} = \textit{node}$，$\textit{start} = \textit{beforeGroup}.\textit{next}$，$\textit{last}$ 为 $\textit{beforeGroup}$ 向后数第 $\textit{groupSize}$ 个结点，$\textit{afterGroup} = \textit{last}.\textit{next}$，如果 $\textit{beforeGroup}$ 后面的结点数少于 $\textit{groupSize}$ 则 $\textit{last}$ 为整个链表的末结点，$\textit{afterGroup} = \text{null}$。
+
+用 $\textit{currGroupSize}$ 表示分组的实际长度，根据 $\textit{currGroupSize}$ 的奇偶性执行相应的操作。
+
+- 如果 $\textit{currGroupSize}$ 是偶数，则将分组中的结点反转，需要反转的结点为从 $\textit{start}$ 开始的 $\textit{currGroupSize}$ 个结点。反转过程中维护上一个结点 $\textit{prev}$ 和当前结点 $\textit{curr}$，初始时 $\textit{prev} = \text{null}$，$\textit{curr} = \textit{start}$，反转结束时 $\textit{prev}$ 指向反转后的分组的新的首结点。组内部反转结束之后，将 $\textit{prev}$ 接在 $\textit{beforeGroup}$ 的后面，将 $\textit{afterGroup}$ 接在 $\textit{start}$ 的后面，即完成组内部与前后相邻结点之间的反转更新。反转完成之后，将 $\textit{node}$ 的值更新为 $\textit{start}$。
+
+- 如果 $\textit{currGroupSize}$ 是奇数，则不将分组中的结点反转。将 $\textit{node}$ 的值更新为 $\textit{last}$。
+
+当 $\textit{node}$ 到达链表末尾时，整个链表反转结束。
+
+## 代码
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public ListNode reverseEvenLengthGroups(ListNode head) {
+        ListNode node = head;
+        int groupSize = 2;
+        while (node.next != null) {
+            ListNode beforeGroup = node;
+            ListNode last = node;
+            int currGroupSize = 0;
+            while (currGroupSize < groupSize && last.next != null) {
+                currGroupSize++;
+                last = last.next;
+            }
+            if (currGroupSize % 2 == 0) {
+                ListNode afterGroup = last.next;
+                ListNode start = beforeGroup.next;
+                ListNode prev = null, curr = start;
+                for (int i = 0; i < currGroupSize; i++) {
+                    ListNode next = curr.next;
+                    curr.next = prev;
+                    prev = curr;
+                    curr = next;
+                }
+                beforeGroup.next = prev;
+                start.next = afterGroup;
+                node = start;
+            } else {
+                node = last;
+            }
+            groupSize++;
+        }
+        return head;
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public ListNode ReverseEvenLengthGroups(ListNode head) {
+        ListNode node = head;
+        int groupSize = 2;
+        while (node.next != null) {
+            ListNode beforeGroup = node;
+            ListNode last = node;
+            int currGroupSize = 0;
+            while (currGroupSize < groupSize && last.next != null) {
+                currGroupSize++;
+                last = last.next;
+            }
+            if (currGroupSize % 2 == 0) {
+                ListNode afterGroup = last.next;
+                ListNode start = beforeGroup.next;
+                ListNode prev = null, curr = start;
+                for (int i = 0; i < currGroupSize; i++) {
+                    ListNode next = curr.next;
+                    curr.next = prev;
+                    prev = curr;
+                    curr = next;
+                }
+                beforeGroup.next = prev;
+                start.next = afterGroup;
+                node = start;
+            } else {
+                node = last;
+            }
+            groupSize++;
+        }
+        return head;
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n)$，其中 $n$ 是链表的长度。需要遍历链表，定位到待反转的分组然后反转，每个分组最多遍历两次，时间复杂度是 $O(n)$。
+
+- 空间复杂度：$O(1)$。
+

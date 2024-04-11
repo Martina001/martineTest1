@@ -1,0 +1,33 @@
+一看到无重复项，就想到最近刚学到的Set集合的特点。于是诞生了以下我的想法：
+先附上代码：
+class Solution {
+public int removeDuplicates(int[] nums) {
+Set<Integer> list=new LinkedHashSet<>();
+list.add(nums[0]);
+for (int i = 1; i < nums.length; i++) {
+list.add(nums[i]);
+}
+int i=0;
+for (Integer integer : list) {
+nums[i]=integer;
+i++;
+}
+return list.size();
+}
+}
+由于HashSet的无序性，先添加的可能在后面，所以不考虑。
+1、先创建集合然后将第一个元素添加进集合。
+2、遍历nums数组，直接将nums各个元素添加进集合，由于set集合的无重复性。一样的元素只会添加进去一个。
+3、因为数组本身的有序，再加上集合的有序性，所以集合内的内容就是我们想要的。遍历集合，将数组的元素进行修改。
+4、直接返回集合大小即可。
+
+时间：
+4 ms
+击败
+6.13%
+内存：
+42.8 MB
+击败
+94.67%
+
+由于遍历了一次数组一次集合，时间复杂度就上来了，不如双指针的一次循环。但是也是我的一个突发奇想。

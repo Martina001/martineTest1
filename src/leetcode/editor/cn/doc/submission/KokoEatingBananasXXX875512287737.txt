@@ -1,0 +1,45 @@
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        // 最小速度可以为1，最大速度也就是piles中的最大值
+        int maxK = Arrays.stream(piles).max().getAsInt();
+        int left = 1,right = maxK;
+        // 左闭右闭
+        while(left<=right){
+            int mid = (right-left)/2+left;
+            int hour = getHour(piles, mid);
+            if(hour<h){
+                right=mid-1;
+            }else if(hour>h){
+                left = mid+1;
+            }else{
+                return mid;
+            }
+        }
+        return left;
+    }
+    private int getHour(int nums[],int speed){
+        int h = 0;
+        for(int num:nums){
+            if(num<=speed){
+                h++;
+            }else{
+                while (num>0){
+                    h++;
+                    num-=speed;
+                }
+            }
+        }
+        return h;
+    }
+}
+
+//runtime:N/A
+//memory:N/A
+//total_testcases:126
+//total_correct:5
+//input_formatted:[332484035,524908576,855865114,632922376,222257295,690155293,112677673,679580077,337406589,290818316,877337160,901728858,679284947,688210097,692137887,718203285,629455728,941802184]
+823855818
+//expected_output:14
+//code_output:
+//runtime_error:
+//last_testcase:[332484035,524908576,855865114,632922376,222257295,690155293,112677673,679580077,337406589,290818316,877337160,901728858,679284947,688210097,692137887,718203285,629455728,941802184] 823855818

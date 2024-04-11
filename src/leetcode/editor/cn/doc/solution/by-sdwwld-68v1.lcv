@@ -1,0 +1,47 @@
+这题只要找出小于等于```n```的数字中素数的个数即可，然后计算素数的排列组合与非素数的排列组合乘积。
+
+* java
+
+```java
+    int mod = 1_000_000_007;
+
+    public int numPrimeArrangements(int n) {
+        int primeCount = eratosthenes(n);// 素数的个数
+        long primeArrange = factorial(primeCount) % mod;// 素数的排列组合
+        long noPrimeArrange = factorial(n - primeCount) % mod;//非素数的排列组合
+        return (int) ((primeArrange * noPrimeArrange) % mod);
+    }
+
+    // 阶乘
+    private long factorial(int n) {
+        if (n <= 1)
+            return 1;
+        long tmp = factorial(n - 1);
+        tmp %= mod;
+        return n * tmp;
+    }
+
+    // 埃氏筛选法求素数个数
+    private int eratosthenes(int n) {
+        //false代表是素数，true代表不是素数
+        boolean[] isPrime = new boolean[n + 1];
+        int count = 0;
+        for (int i = 2; i <= n; i++) {
+            if (isPrime[i])// 如果不是素数跳过
+                continue;
+            count++;// 素数加1，
+            // 素数的倍数都不是素数
+            for (int j = i + i; j <= n; j += i) {
+                isPrime[j] = true;
+            }
+        }
+        return count;
+    }
+```
+
+<br> </br>
+
+### 埃氏筛选法求素数
+
+![leet0000.mp4](https://leetcode.cn/problems/prime-arrangements/solution/by-sdwwld-68v1/a494d75e-f871-4c9b-91d3-40dc90e48c2b)
+

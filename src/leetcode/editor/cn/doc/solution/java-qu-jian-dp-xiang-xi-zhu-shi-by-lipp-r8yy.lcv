@@ -1,0 +1,51 @@
+阿里3.22笔试题hh
+解题思路：
+- 这类取石头的游戏大多是可以用一维的区间DP，来完成，因为当前区间的状态，可以从拿走时候后剩下区间的状态获取过来。
+- 首先是状态表示，利用一个二维数组，表示所有可能的区间下，A的最大得分；
+- 然后是状态转移，当前区间的最大值，一定是从拿走石子后剩下的区间状态得分加上这段区间石子的总和转移过来的；
+- 最后返回整个区间的得分；
+- 在枚举区间的过程中，往往都是先从小到大枚举区间长度，再枚举起点，这样，长的可以从短的状态转移过来。
+- 各位力扣老爷，公审天皇，走向未曾设想的道路，还请各位立刻捐赠20个赞，以便我军再战。
+
+* java
+
+```java
+class Solution {
+    public int stoneGameV(int[] stoneValue) {
+        int n = stoneValue.length;
+        // 建立状态表示数组
+        int[][] f = new int[n][n];
+        // 前缀和，快速获取范围内的元素和
+        int[] sub = new int[n + 1];
+        // 获取前缀和
+        for(int i = 0; i < n; i++) {
+            sub[i + 1] = sub[i] + stoneValue[i];
+        }
+        int res = 0;
+        // 枚举所有情况，先枚举区间长度，再枚举起点和终点
+        for(int len = 2; len <= n; len ++) {
+            for(int i = 0; i + len - 1 < n; i ++) {
+                int j = i + len - 1;
+                // 枚举所有的切分点
+                for(int k = i; k < j; k ++) {
+                    // 分别计算左边和右边的和
+                    int left = sub[k + 1] - sub[i];
+                    int right = sub[j + 1] - sub[k + 1];
+                    // 计算每种情况下的状态转移，当前状态就是从切分后剩下的区间状态转移过来的
+                    if(left > right) {
+                        f[i][j] = Math.max(f[i][j], right + f[k + 1][j]);
+                    } else if(left < right) {
+                        f[i][j] = Math.max(f[i][j], left + f[i][k]);
+                    } else {
+                        f[i][j] = Math.max(f[i][j], Math.max(left + f[i][k], right + f[k + 1][j]));
+                    }
+                    
+                }
+            }
+        }
+
+        return f[0][n - 1];
+    }
+}
+```
+

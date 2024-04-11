@@ -1,0 +1,91 @@
+> Problem: [377. 组合总和 Ⅳ](https://leetcode.cn/problems/combination-sum-iv/description/)
+
+[TOC]
+
+# 解题方法
+
+目标和的排列问题：排列问题与普通的组合问题不同，需要提前遍历不同排列为后面的dp提供数据，为什么？个人认为本题和背包问题毫无关联，硬套背包模板只会走入误区，理解二维dp数组的定义和转移方程的推导最为重要，一维的dp方案也是由二维优化而来，但本题解在此尝试给出尽可能详细的数学证明。
+
+# 数学推导
+
+设$n$为$nums$的总数。
+
+设$dp[i][j]$为：选取了**前i个数**（$nums[0...i - 1]$）分别作为排列的**最后一个元素（前面的元素没有限制）**，且排列之和为$j$的所有排列的总数，根据问题，我们需要得到和为$target$的所有排列，即$dp[n][target]$。
+
+添加辅助函数：设$P[i][j]$为：选取**第i个数**（$nums[i-1]$）作为排列的最后一个元素，且排列之和为$j$的所有排列的总数。显然，不同的$P[i][j]$所记录的排列之间互不重叠，则有：
+
+$$
+dp[i][j] = \sum_{k = 0}^iP[k][j]
+$$
+
+提出最后一项：
+
+$$
+dp[i][j] = \sum_{k = 0}^{i-1}P[k][j] + P[i][j] = dp[i-1][j] + P[i][j]
+$$
+
+那么，只需要知道$P[i][j]$，就可得到完整的转移方程。
+
+考虑$P[i][j]$内的所有排列，由于其末尾元素都是$nums[i-1]$，前面的元素没有限制（即$nums$内可选的所有元素），那么我们把这些排列的末尾元素全部移除，就构成了一组新的排列，即：总和为$j-nums[i-1]$的所有排列（没有限制），根据dp的定义，我们得到了$P[i][j] = dp[n][j - nums[i - 1]]$，因此，完整的转移方程为：
+
+$$
+dp[i][j] = dp[i-1][j] + dp[n][j - nums[i - 1]]
+$$
+
+可以自行画图感受一下每次dp计算所必须的状态，自然能够推导出遍历方向：外层遍历target（行），内层遍历nums（列）
+
+一个简单的具体用例：nums = {1,2,3}, target = 7
+
+![图片_20240303001756.jpg](https://pic.leetcode.cn/1709392689-tbFxGU-%E5%9B%BE%E7%89%87_20240303001756.jpg)
+
+# Code
+
+* []
+
+```C++
+class Solution {
+public:
+    int combinationSum4(vector<int>& nums, int target) {
+        using ull = unsigned long long ;
+        int n = nums.size();
+
+        vector<vector<int>> dp(n + 1, vector<int>(target + 1, 0));
+        dp[0][0] = 1;
+
+        for(int j = 0; j <= target; j++){
+            for(int i = 1; i <= n; i++){
+                //                    remove this part: use ull
+                if(j < nums[i - 1] || dp[i-1][j] > INT32_MAX - dp[n][j - nums[i - 1]]) 
+                    dp[i][j] = dp[i-1][j];
+                else dp[i][j] = dp[i-1][j] + dp[n][j - nums[i - 1]];
+            }
+        }
+
+        return dp[n][target];
+    }
+};
+```
+
+空间优化：由于计算时，我们只使用该列上一行（dp[i-1][j]）和前面某列最末尾元素（dp[n][j - nums[i - 1]），因此可将dp空间优化为一维。
+
+* []
+
+```C++
+class Solution {
+public:
+    int combinationSum4(vector<int>& nums, int target) {
+        using ull = unsigned long long ;
+
+        vector<ull> dp1D(target + 1, 0);
+        dp1D[0] = 1;
+        for(int t = 0; t <= target; t++){
+            for(int num : nums){
+                if(t >= num) dp1D[t] += dp1D[t - num];
+            }
+        }
+
+        return dp1D[target];
+    }
+};
+```
+

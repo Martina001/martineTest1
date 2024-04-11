@@ -1,0 +1,19 @@
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        if(null == nums || nums.length == 0) return 0;
+        int len = nums.length;
+        int i = 0,j= len-1;
+        while(i<len && j>=0 && i<=j){
+            if(nums[i] == val){
+                nums[i] = nums[j];
+                j--;
+                continue;
+            }
+            i++;
+        }
+        return i;
+    }
+}
+
+//runtime:0 ms
+//memory:40.1 MB

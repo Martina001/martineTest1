@@ -1,0 +1,43 @@
+> Problem: [1859. 将句子排序](https://leetcode.cn/problems/sorting-the-sentence/description/)
+
+[TOC]
+
+# 思路
+
+> 讲述看到这一题的思路
+
+# 解题方法
+
+> 描述你的解题方法
+
+# 复杂度
+
+时间复杂度:
+
+> 添加时间复杂度, 示例： $O(n)$
+
+空间复杂度:
+
+> 添加空间复杂度, 示例： $O(n)$
+
+# Code
+
+* []
+
+```JavaScript
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var sortSentence = function(s) {
+    const list = s.split(' ')
+    const newList = list.sort((a,b) => {
+        const aNum = a.charAt(a.length -1)
+        const bNum = b.charAt(b.length -1)
+        return aNum - bNum
+    })
+    const newStr =  newList.join(' ')
+    return newStr.replace(/\d/g, '')
+};
+```
+

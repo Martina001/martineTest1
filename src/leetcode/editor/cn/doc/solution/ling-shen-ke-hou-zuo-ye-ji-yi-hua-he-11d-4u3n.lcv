@@ -1,0 +1,65 @@
+> Problem: [1312. 让字符串成为回文串的最少插入次数](https://leetcode.cn/problems/minimum-insertion-steps-to-make-a-string-palindrome/description/)
+
+[TOC]
+
+# 思路
+
+> 找到最大回文子序列，再用n-其即可
+
+# 解题方法
+
+> 记忆化->1:1递推
+
+# 复杂度
+
+- 时间复杂度:
+
+> 添加时间复杂度, 示例： $O(n)$
+
+- 空间复杂度:
+
+> 添加空间复杂度, 示例： $O(n)$
+
+/*
+class Solution {
+public:
+int minInsertions(string s) {
+int n=s.size();
+int dp[n][n];
+memset(dp,-1,sizeof(dp));
+function<int(int,int)>dfs=[&](int i,int j){
+if(i==j){
+return 1;
+}
+if(i>j){
+return 0;
+}
+int &res=dp[i][j];
+if(res!=-1) return res;
+if(s[i]==s[j]){return res=dfs(i+1,j-1)+2; }else{return res=max(dfs(i+1,j),dfs(i,j-1)); }
+};
+int maxa=dfs(0,n-1);
+return n-maxa;
+}
+}; */
+//1：1递推
+class Solution {
+public:
+int minInsertions(string s) {
+int n=s.size();
+int dp[n+1][n+1];
+memset(dp,0,sizeof(dp));
+for(int i=n-1;i>=0;i--){
+dp[i][i+1]=1;<!-- 防止后面j-1出现复数下标 -->
+for(int j=i+1;j<n;j++){
+if(s[i]==s[j]){
+dp[i][j+1]=dp[i+1][j]+2;
+}else{
+dp[i][j+1]=max(dp[i+1][j+1],dp[i][j]);
+}
+}
+}
+return n-dp[0][n];
+}
+};
+

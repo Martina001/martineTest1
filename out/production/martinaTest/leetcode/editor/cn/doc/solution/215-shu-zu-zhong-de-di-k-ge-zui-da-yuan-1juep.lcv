@@ -1,0 +1,76 @@
+> Problem: [215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/description/)
+
+[TOC]
+
+# 基于快速排序的快速选择
+
+使用快速排序，将数组划分为小于基准数和大于基准数的两部分，如果k在小于或大于基准数的部分，则进入该部分递归查找。如果k对应pivot位置，则返回。
+
+# 算法优化
+
+为了避免快排最差情况$O(N^2)$的发生，进行以下优化
+1. 选择合适的主元
+   假设每次选择的基准pivot为极值，则会导致最差情况的发生。因此在待排数组中选取左，中，右各三个数，取中位数作为主元。这样可以在一定程度上避免最差情况的产生。
+2. 三向划分，对重复的元素不排序
+   当数组中存在大量的重复元素时，还是会有大量不必要的开销，这时采用三向划分来优化快排。如下图所示：
+   ![image.png](https://pic.leetcode.cn/1709134978-uVjnDu-image.png)
+   通过维持三个指针来控制[left, lt)小于pivot，[lt, i)等于pivot, [i，gt]未知， (gt, right]大于pivot。
+   一开始lt指向left，gt指向right，i从left+1的位置开始遍历，每遇到一个数则判断与pivot的关系：
+
+- 小于pivot，把这个数与lt指向的数交换，lt和i自增1，继续遍历
+- 大于pivot，把这个数与gt指向的数交换，gt自减1，i不动，因为不知道gt换过来的数与pivot的关系。
+- 等于pivot，i自增1
+
+最后当发现第n-k小的数在等于pivot的范围中时，则直接返回pivot。
+
+# 复杂度
+
+时间复杂度:
+$O(N)$
+
+空间复杂度:
+$O(logN)$
+
+# Code
+
+* []
+
+```Java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int n = nums.length;
+        return quickSelect(nums, 0, n - 1, n - k);
+    }
+
+    public int quickSelect(int[] nums, int left, int right, int k) {
+        // 三数中位数为pivot
+        int pivotIndex = getMedian(nums, left, (left + right) / 2, right);
+        swap(nums, left, pivotIndex);
+        int pivot = nums[left];
+        //三向划分优化
+        //<pivot: [left, lt)  ==pivot: [lt, gt]  >pivot: (gt, right]
+        int lt = left, i = left + 1, gt = right;
+        while (i <= gt) {
+            if (nums[i] < pivot) swap(nums, lt++, i++);
+            else if (nums[i] > pivot) swap(nums, gt--, i);
+            else i++;
+        }
+        if (k < lt) return quickSelect(nums, left, lt - 1, k);
+        if (gt < k) return quickSelect(nums, gt + 1, right, k);
+        return pivot;
+    }
+
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public static int getMedian(int[] nums, int left, int middle, int right) {
+        return nums[left] > nums[middle]
+                ? (nums[left] > nums[right] ? right : left)
+                : (nums[middle] > nums[right] ? right : middle);
+    }
+}
+```
+

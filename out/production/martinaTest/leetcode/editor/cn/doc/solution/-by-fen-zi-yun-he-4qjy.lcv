@@ -1,0 +1,181 @@
+**调用数组排序的Api**
+按升序排列，取倒数第k个元素。
+时间复杂度：O(n*logn)
+
+* Java
+
+```Java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        Arrays.sort(nums);
+        return nums[nums.length - k];
+
+    }
+}
+```
+
+**使用优先队列PriorityQueue**
+PriorityQueue默认是升序排列，所以如果PriorityQueue中存放的数超过k个，就移除这堆头最小元素。
+最后剩下的k个元素中的第一个元素，即为所求。
+时间复杂度：O(n*logn)，空间复杂度：O(n)
+
+* Java
+
+```Java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for(int i = 0; i < nums.length; i ++) {
+            pq.offer(nums[i]);
+            if(pq.size() > k) {
+                //如果堆存放数量超过k，移除堆头最小元素
+                pq.poll();
+            }
+        }
+        return pq.poll();
+    }
+}
+```
+
+**手写归并排序**
+时间复杂度：O(n*logn)，空间复杂度：O(n)
+
+* Java
+
+```Java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+       nums = queueSort(nums, 0, nums.length - 1);
+       return nums[nums.length - k];
+    }
+
+    private int[] queueSort(int[] nums, int left, int right) {
+        if(left == right) {
+            // 这里不是返回nums,而是返回一个长度为1的新数组
+            return new int[]{nums[left]};
+        }
+        int mid = left + (right - left >> 1);
+        int[] leftArr = queueSort(nums, left, mid);
+        int[] rightArr = queueSort(nums, mid + 1, right);
+        return merge(leftArr, rightArr);
+    }
+
+    private int[] merge(int[] left, int[] right) {
+        int len1 = left.length, len2 = right.length;
+        int[] tmp = new int[len1 + len2];
+        int i = 0, j = 0;
+        int idx = 0;
+        while(i < len1 && j < len2) {
+            if(left[i] < right[j]) {
+                tmp[idx ++] = left[i ++];
+            } else {
+                tmp[idx ++] = right[j ++];
+            }
+        }
+        while(i < len1) {
+            tmp[idx ++] = left[i ++];
+        }
+        while(j < len2) {
+            tmp[idx ++] = right[j ++];
+        }
+        return tmp;
+    }
+}
+```
+
+**手写快速排序**
+时间复杂度：O(n*logn)，空间复杂度：O(1)
+
+* Java
+
+```Java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        quickSort(nums, 0, nums.length - 1);
+        return nums[nums.length - k];
+    }
+
+    private void quickSort(int[] nums, int left, int right) {
+        if(left < right) {
+            swap(nums, left + (int)(Math.random() * (right - left + 1)), right);
+            int[] tmp = sort(nums, left, right);
+            quickSort(nums, left, tmp[0] - 1);
+            quickSort(nums, tmp[1] + 1, right);
+        }
+    }
+
+    private int[] sort(int[] nums, int left, int right) {
+        int less = left - 1;
+        int more = right;
+        while(left < more) {
+            if(nums[left] < nums[right]) {
+                swap(nums, ++ less, left ++);
+            } else if(nums[left] > nums[right]) {
+                swap(nums, -- more, left);
+            } else {
+                left ++;
+            }
+        }
+        swap(nums, right, more);
+        return new int[]{less + 1, more};
+    }
+
+    void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+}
+```
+
+**手写堆排序**
+时间复杂度：O(n*logn)，空间复杂度：O(1)
+
+* Java
+
+```Java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        for(int i = 0; i < nums.length; i ++) {
+            heapInsert(nums, i);
+        }
+        int size = nums.length;
+        if(k != 1) {
+            for(int i = 0; i < k - 1; i ++) {
+                swap(nums, 0, -- size);
+                heapify(nums, 0, size);
+            }
+        }
+        return nums[0];
+    }
+
+    private void heapInsert(int[] nums, int index) {
+        while(nums[index] > nums[(index - 1) / 2]) {
+            swap(nums, index, (index - 1) / 2);
+            index = (index - 1) / 2;
+        }
+    }
+
+    private void heapify(int[] nums, int index, int size) {
+        int largest = 2 * index + 1;
+        // 这里不应该写成 index < size
+        while(largest < size) {
+            largest = largest + 1 < size && nums[largest + 1] > nums[largest] ? largest + 1 : largest;
+            largest = nums[index] > nums[largest] ? index : largest;
+            if(largest == index) {
+                break;
+            }
+            swap(nums, index, largest);
+            index = largest;
+            largest = 2 * index + 1;
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+}
+```
+

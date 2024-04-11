@@ -1,0 +1,64 @@
+# 解法
+
+## 思路和算法
+
+由于字符串 $s$ 非空，因此最小删除次数一定大于 $0$。
+
+由于字符串 $s$ 只有字母 $\text{`a'}$ 和 $\text{`b'}$，同一种字符组成的子序列一定是回文子序列，因此最小删除次数一定小于等于 $2$。
+
+根据上述分析，对于任意字符串 $s$，最小删除次数一定是 $1$ 或 $2$。
+
+如果字符串 $s$ 是回文串，则可以一次删除整个字符串，最小删除次数是 $1$；如果字符串 $s$ 不是回文串，则最小删除次数是 $2$。因此，需要判断字符串 $s$ 是否为回文串。
+
+用 $n$ 表示字符串 $s$ 的长度。字符串 $s$ 是回文串等价于对于任意满足 $\textit{left} < \textit{right}$ 且 $\textit{left} + \textit{right} = n - 1$ 的下标对都有 $s[\textit{left}] = s[\textit{right}]$，因此可以使用双指针遍历字符串 $s$ 判断是否为回文串。具体做法是，用 $\textit{left}$ 和 $\textit{right}$ 分别表示双指针指向的下标，初始时 $\textit{left} = 0$，$\textit{right} = n - 1$。当 $\textit{left} < \textit{right}$ 时，执行如下操作。
+
+- 如果 $s[\textit{left}] \ne s[\textit{right}]$，则字符串 $s$ 不是回文串，最小删除次数是 $2$，返回 $2$。
+
+- 如果 $s[\textit{left}] = s[\textit{right}]$，则将 $\textit{left}$ 向右移动一位，将 $\textit{right}$ 向左移动一位。
+
+当 $\textit{left} \ge \textit{right}$ 时，遍历结束，如果没有遇到 $s[\textit{left}] \ne s[\textit{right}]$，则字符串 $s$ 是回文串，最小删除次数是 $1$，返回 $1$。
+
+## 代码
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public int removePalindromeSub(String s) {
+        int left = 0, right = s.length() - 1;
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                return 2;
+            }
+            left++;
+            right--;
+        }
+        return 1;
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public int RemovePalindromeSub(string s) {
+        int left = 0, right = s.Length - 1;
+        while (left < right) {
+            if (s[left] != s[right]) {
+                return 2;
+            }
+            left++;
+            right--;
+        }
+        return 1;
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n)$，其中 $n$ 是字符串 $s$ 的长度。双指针遍历字符串一次。
+
+- 空间复杂度：$O(1)$。
+

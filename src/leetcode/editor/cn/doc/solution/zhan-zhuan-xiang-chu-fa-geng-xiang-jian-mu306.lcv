@@ -1,0 +1,246 @@
+### 解题思路
+
+如何求解两个非负整数 $x$，$y$ 的最大公约数（gcd, Greatest Common Divisor）？
+这里总结三种常用的方法：**辗转相除法**、**更相减损术** 及其基础上进行改进的 **Stein算法**。
+
+&nbsp;
+
+> 注，一旦求出 $x$ 和 $y$ 的最大公约数 $\gcd(x, y)$，其最小公倍数 $\text{lcm}(x,y)$ 也就得出：
+> $\text{lcm}(x,y) = \frac{x * y}{\gcd(x, y)}\ .$
+
+<br> </br>
+
+---
+
+**方法一：辗转相除法**
+
+[**辗转相除法**](https://baike.baidu.com/item/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/1647675?fromtitle=%E8%BE%97%E8%BD%AC%E7%9B%B8%E9%99%A4%E6%B3%95&fromid=4625352)，又称 **欧几里得算法**，对于两个非负整数 $x, y \ (x > y)$，其计算公式为：
+
+$\gcd(x, y) = \gcd(y, x\ mod\ y) \ .$
+
+&nbsp;
+下面给出其 **递归** 和 **迭代** 写法：
+
+### 代码
+
+1.1 递归写法
+
+* []
+
+```Python
+class Solution:
+    def findGCD(self, nums: List[int]) -> int:
+        
+        def gcd(x, y):      # 满足 x>=y
+            if y == 0:
+                return x
+            return gcd(y, x%y)
+        
+        mx, mn = max(nums), min(nums)
+        return gcd(mx, mn)
+```
+
+1.2 迭代写法
+
+* []
+
+```Python
+class Solution:
+    def findGCD(self, nums: List[int]) -> int:
+
+        def gcd(x, y):      # 满足 x>=y        
+            while y:
+                x, y = y, x%y
+            return x
+
+        mx, mn = max(nums), min(nums)
+        return gcd(mx, mn)
+```
+
+<br> </br>
+
+---
+
+**方法二：更相减损术**
+
+[**更相减损术**](https://baike.baidu.com/item/%E6%9B%B4%E7%9B%B8%E5%87%8F%E6%8D%9F%E6%9C%AF/449183)，出自《九章算术》（原本是为了求约分，修改后可用来求解最大公约数）的一种求最大公约数的算法。
+
+其基本思路为（搬运自[百度百科](https://baike.baidu.com/item/%E6%9B%B4%E7%9B%B8%E5%87%8F%E6%8D%9F%E6%9C%AF/449183)）：
+* 以较大的数减较小的数，接着把所得的差与较小的数比较，并以大数减小数。
+* 继续上述操作，直到所得的减数和差相等为止。
+
+&nbsp;
+下面给出其 **递归** 和 **迭代** 写法：
+
+### 代码
+
+2.1 递归写法
+
+* []
+
+```Python
+class Solution:
+    def findGCD(self, nums: List[int]) -> int:
+        
+        def gcd(x, y):
+            if x == y:
+                return x
+            if x < y:
+                return gcd(y-x, x)
+            return gcd(x-y, y)
+        
+        mx, mn = max(nums), min(nums)
+        return gcd(mx, mn)
+```
+
+2.2 迭代写法
+
+* []
+
+```Python
+class Solution:
+    def findGCD(self, nums: List[int]) -> int:
+        
+        def gcd(x, y):
+            while True:
+                if x == y:
+                    return x
+                if x < y:       # 保证 x>y
+                    x, y = y, x
+                x = x-y
+        
+        mx, mn = max(nums), min(nums)
+        return gcd(mx, mn)
+```
+
+<br> </br>
+
+---
+
+**方法三：Stein算法**
+
+[**Stein算法**](https://baike.baidu.com/item/Stein%E7%AE%97%E6%B3%95) 是一种计算两个数最大公约数的算法，是针对欧几里得算法在对**大整数**进行运算时，需要试商导致增加运算时间的缺陷而提出的改进算法。
+
+其基本思路为：
+1. 对于给定的两个正整数 $x, y$，判断它们是否都是偶数：若是，则用2约简，直至两者不同时为偶数。
+2. 将两数中的偶数（如存在）进一步约简为奇数；以较大的数减较小的数，接着把所得的差与较小的数比较，并以大数减小数。
+3. 继续上述第2步操作，直到所得的减数和差相等为止。
+4. 最终，第1步中约掉的若干个2的积与第3步中等数的乘积就是所求的最大公约数。
+
+&nbsp;
+下面给出其 **递归** 和 **迭代** 写法：
+
+### 代码
+
+3.1 递归写法
+
+* []
+
+```Python
+class Solution:
+    def findGCD(self, nums: List[int]) -> int:
+        
+        def gcd(x, y):
+            if x < y:       # 保证 x>y
+                x, y = y, x
+
+            if y == 0:
+                return x
+
+            if x%2 == 0 and y%2 == 0:       # x，y均为偶数
+                return 2 * gcd(x//2, y//2)  # 2一定为最大公约数的一部分【注意前面的2*】
+
+            if x%2 == 0:                    # x为偶数，y为奇数；此时2显然不是x和y的最大公约数的一部分
+                return gcd(x//2, y)         
+
+            if y%2 == 0:                    # y为偶数，x为奇数；此时2显然不是x和y的最大公约数的一部分
+                return gcd(x, y//2)         
+            
+            return gcd((x-y)//2, y)         # 若x，y均为奇数，则 x-y 为偶数
+        
+        mx, mn = max(nums), min(nums)
+        return gcd(mx, mn)
+```
+
+3.2 迭代写法
+
+* []
+
+```Python
+class Solution:
+    def findGCD(self, nums: List[int]) -> int:
+        
+        def gcd(x, y):
+            if x==0 or y==0:    # 若x为0，返回y；反之亦然
+                return x+y
+            
+            k = 0               # x和y同时为偶数的迭代次数k
+            while x%2 == 0 and y%2 == 0:
+                x //= 2         # x和y同时除以2
+                y //= 2
+                k += 1
+            
+            while y%2 == 0:         # y如为偶数，将其变为奇数【从此以后y为奇数】
+                y //= 2
+            
+            while True:
+                while x%2 == 0:     # x如为偶数，将其变为奇数
+                    x //= 2
+
+                if x==y:
+                    return x * (2**k)    # 返回结果时还要乘以 2**k
+                
+                # 类似于更相减损术
+                if y > x:   # 保证 x>y
+                    x, y = y, x
+                x = x-y             # 若x和y均为奇数，则x-y为偶数
+
+        
+        mx, mn = max(nums), min(nums)
+        return gcd(mx, mn)
+```
+
+* []
+
+```Python
+class Solution:
+    def findGCD(self, nums: List[int]) -> int:
+        
+        def gcd(x, y):
+            if x==0 or y==0:    # 若x为0，返回y；反之亦然
+                return x+y
+
+            k = 0               # x和y同时为偶数的迭代次数k
+            while (x | y) & 1 == 0:
+                x >>= 1         # x和y同时除以2
+                y >>= 1
+                k += 1
+            
+            while (y & 1) == 0:     # y如为偶数，将其变为奇数【从此以后y为奇数】
+                y >>= 1
+            
+            while True:
+                while (x & 1) == 0: # x如为偶数，将其变为奇数
+                    x >>= 1
+
+                if x==y:
+                    return x << k   # 返回结果时还要乘以 2**k
+                
+                # 类似于更相减损术
+                if y > x:   # 保证 x>y
+                    x, y = y, x
+                x = x-y             # 若x，y均为奇数，则 x-y 为偶数
+
+        mx, mn = max(nums), min(nums)
+        return gcd(mx, mn)
+```
+
+<br> </br>
+
+---
+
+**复杂度分析**
+
+* 时间复杂度：$O(n + \log M)$，其中 $n$ 为 $nums$ 的长度，$M$ 为 $nums$ 的最大值。
+* 空间复杂度：迭代为 $O(1)$，递归为 $O(\log M)$。
+

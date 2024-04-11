@@ -1,0 +1,67 @@
+> 解题思路：
+> dp[i][j]代表： 从i到j 区间,Alice分数最大值
+> [i x x x x [m] x x x j]
+> 枚举每个m(切割点)
+> 假设我们已经知道dp[i][m]和dp[m+1][j]的值   (这步就是状态转移的突破口)
+
+> case 1: 如果score[i ~ m] == score[m+1 ~ j]
+> Alice做决定：Alice要获得最大分数，肯定要取max (dp[i][m] ,dp[m+1][j]) + score[i ~ m]
+
+> case 2: 如果score[i ~ m] != score[m+1 ~ j]
+> Bob会丢弃值最大的行, Alice只能取剩下的
+> 即:如果score[i ~ m] > score[m+1 ~ j]
+> >> 那么：Alice只能取得 score[m+1 ~ j]+dp[m+1][j]
+> >> 否则：Alice取得 score[i ~ m]+dp[i,m];
+
+> (优化)score[i ~ m]: 因为是连续的，可用前缀和优化
+
+> Java实现代码:
+
+* 
+
+```
+public int stoneGameV(int[] stoneValue) {
+        int N = stoneValue.length;
+        int[][] dp = new int[N][N];
+        
+        //前缀和
+        int[] preSum= new int[N];
+        preSum[0]=stoneValue[0];
+        for (int i = 1; i < stoneValue.length; i++) {
+            preSum[i] =preSum[i-1]+stoneValue[i];
+        }
+        
+        //区间dp
+        for (int len = 2; len <=N ; len++) {
+            for (int i = 0; i+len-1 <N ; i++) {
+                int j = i+len-1;
+                for (int m = i; m <=j ; m++) {
+                    if (i>m || m+1>j){
+                        continue;
+                    }
+                    int l = dp[i][m];   //左区间
+                    int r = dp[m+1][j]; //右区间
+                    int ls =  preSum[m] - (i>0? preSum[i-1]:0); // i ~ m 分数
+                    int rs = preSum[j]- preSum[m]; //m+1 ~ j 分数
+                    
+                    //case 1: Alice决定丢那行
+                    if (ls == rs){
+                        int score = Math.max(l,r)+ls;
+                        dp[i][j] = Math.max(dp[i][j],score);
+                    }
+                    //case 2: Bob丢掉最大的，Alice只能选剩下的
+                    else{
+                        if (ls>rs){
+                            dp[i][j] = Math.max(dp[i][j],r+rs);
+                        }else{
+                            dp[i][j] = Math.max(dp[i][j],l+ls);
+                        }
+                    }
+                }
+            }
+
+        }
+        return dp[0][N-1];
+    }
+```
+

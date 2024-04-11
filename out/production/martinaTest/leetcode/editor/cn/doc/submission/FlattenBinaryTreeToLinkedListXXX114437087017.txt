@@ -1,0 +1,62 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode preNode = null;
+    public TreeNode dummy = new TreeNode(-1);
+    public TreeNode step = dummy;
+    public void flatten(TreeNode root) {
+        // 解法1.后序遍历的变种
+        /*if(root == null) return;
+        flatten(root.right);
+        flatten(root.left);
+        root.right = preNode;
+        root.left = null;
+        preNode = root;*/
+        // flattenDummy(root);
+        // root = dummy.right;
+        
+        // 解法2 原地展开，后序遍历变种
+        if(root == null) return;
+        flatten(root.left);
+        flatten(root.right);
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        
+        // 先把左边展开的子项接上去
+        root.left = null;
+        root.right = left;
+
+        // 再把左边已经展开的子项走到底之后，再把当前的右节点接上去
+        TreeNode step = root;
+        while(step.right != null){
+            step = step.right;
+        }
+        step.right = right;
+    }
+
+    public void flattenDummy(TreeNode root){
+        // 解法3有问题，前序遍历顺序不对，还得是解法1
+        if(root == null) return;
+        
+        step.right = new TreeNode(root.val);
+        step = step.right;
+    
+        flatten(root.left);
+        flatten(root.right);
+    }
+}
+//runtime:0 ms
+//memory:40.1 MB
