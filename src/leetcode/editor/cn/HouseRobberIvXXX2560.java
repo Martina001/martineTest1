@@ -47,10 +47,6 @@
 
 package leetcode.editor.cn;
 
-import leetcode.editor.cn.mystructure.TreeNode;
-
-import java.util.Collections;
-
 //Java：打家劫舍 IV
 public class HouseRobberIvXXX2560 {
     public static void main(String[] args) {

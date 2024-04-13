@@ -40,8 +40,6 @@
 
 package leetcode.editor.cn;
 
-import static lc.HeadSort.swap;
-
 //Java：按奇偶排序数组 II
 public class SortArrayByParityIiXXX922{
 public static void main(String[] args) {

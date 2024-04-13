@@ -39,10 +39,8 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 //Java：字符的最短距离
 public class ShortestDistanceToACharacterXXX821{

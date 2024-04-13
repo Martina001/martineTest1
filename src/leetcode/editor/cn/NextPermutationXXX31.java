@@ -53,11 +53,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 //Java：下一个排列
 public class NextPermutationXXX31{
 public static void main(String[] args) {

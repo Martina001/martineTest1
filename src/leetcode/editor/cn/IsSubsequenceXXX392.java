@@ -42,7 +42,9 @@
 
 package leetcode.editor.cn;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 //Java：判断子序列
 public class IsSubsequenceXXX392 {

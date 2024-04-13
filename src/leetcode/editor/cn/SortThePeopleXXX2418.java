@@ -37,7 +37,7 @@
 
 package leetcode.editor.cn;
 
-import java.util.*;
+import java.util.Arrays;
 
 //Java：按身高排序
 public class SortThePeopleXXX2418 {

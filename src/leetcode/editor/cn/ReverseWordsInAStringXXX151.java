@@ -52,10 +52,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 //Java：反转字符串中的单词
 public class ReverseWordsInAStringXXX151 {
     public static void main(String[] args) {

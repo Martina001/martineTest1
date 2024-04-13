@@ -44,10 +44,6 @@
 
 package leetcode.editor.cn;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
-import java.util.Objects;
-
 //Java：验证回文串
 public class ValidPalindromeXXX125 {
     public static void main(String[] args) {

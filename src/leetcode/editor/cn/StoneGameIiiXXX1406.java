@@ -55,7 +55,6 @@
 package leetcode.editor.cn;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 //Java：石子游戏 III
 public class StoneGameIiiXXX1406 {

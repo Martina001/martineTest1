@@ -44,9 +44,7 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 //Java：有效的括号
 public class ValidParenthesesXXX20 {

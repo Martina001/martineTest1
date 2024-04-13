@@ -50,8 +50,6 @@ package leetcode.editor.cn;
 
 import leetcode.editor.cn.mystructure.TreeNode;
 
-import java.util.*;
-
 //Java：最大二叉树
 public class MaximumBinaryTreeXXX654 {
     public static void main(String[] args) {

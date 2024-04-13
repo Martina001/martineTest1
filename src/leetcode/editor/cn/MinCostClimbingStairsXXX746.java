@@ -44,8 +44,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 //Java：使用最小花费爬楼梯
 public class MinCostClimbingStairsXXX746{
 public static void main(String[] args) {

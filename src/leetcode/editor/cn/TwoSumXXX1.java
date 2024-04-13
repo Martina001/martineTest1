@@ -47,7 +47,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 //Java：两数之和

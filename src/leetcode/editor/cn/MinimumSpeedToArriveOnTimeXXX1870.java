@@ -59,8 +59,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 //Java：准时到达的列车最小时速
 public class MinimumSpeedToArriveOnTimeXXX1870{
 public static void main(String[] args) {

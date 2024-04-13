@@ -54,8 +54,6 @@
 
 package leetcode.editor.cn;
 
-import com.sun.deploy.util.StringUtils;
-
 import java.util.LinkedList;
 
 //Java：字符串解码
@@ -103,7 +101,7 @@ public class DecodeStringXXX394 {
                 } else {
                     i++;
                     StringBuffer sb = new StringBuffer();
-                    while (!stack.isEmpty()) {
+                    while(!stack.isEmpty()) {
                         Character pop = stack.pop();
                         if (pop == '[') {
                             count--;

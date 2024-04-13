@@ -36,8 +36,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.List;
-
 //Java：反转链表 II
 public class ReverseLinkedListIiXXX92 {
     public static void main(String[] args) {

@@ -48,9 +48,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.HashSet;
-import java.util.Set;
-
 //Java：3 的幂
 public class PowerOfThreeXXX326 {
     public static void main(String[] args) {

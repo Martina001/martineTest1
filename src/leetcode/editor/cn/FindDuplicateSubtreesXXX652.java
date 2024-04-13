@@ -44,7 +44,6 @@
 package leetcode.editor.cn;
 
 import javafx.util.Pair;
-import leetcode.editor.cn.mystructure.ListNode;
 import leetcode.editor.cn.mystructure.TreeNode;
 
 import java.util.*;

@@ -41,8 +41,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 //Java：跳跃游戏 II
 public class JumpGameIiXXX45{
 public static void main(String[] args) {

@@ -40,7 +40,6 @@
 
 package leetcode.editor.cn;
 
-import javafx.print.Collation;
 import leetcode.editor.cn.mystructure.TreeNode;
 
 import java.util.*;

@@ -42,10 +42,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 //Java：最长交替子数组
 public class LongestAlternatingSubarrayXXX2765{
 public static void main(String[] args) {

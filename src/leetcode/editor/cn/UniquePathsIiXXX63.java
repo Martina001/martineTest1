@@ -42,8 +42,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 //Java：不同路径 II
 public class UniquePathsIiXXX63 {
     public static void main(String[] args) {

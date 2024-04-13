@@ -47,8 +47,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 //Java：最长公共子序列
 public class LongestCommonSubsequenceXXX1143 {
     public static void main(String[] args) {

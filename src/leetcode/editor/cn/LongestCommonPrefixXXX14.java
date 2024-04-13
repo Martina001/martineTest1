@@ -32,11 +32,6 @@
 
 package leetcode.editor.cn;
 
-import java.sql.Array;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 //Java：最长公共前缀
 public class LongestCommonPrefixXXX14 {
     public static void main(String[] args) {

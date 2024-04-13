@@ -38,8 +38,6 @@
 
 package leetcode.editor.cn;
 
-import com.sun.tools.javac.util.StringUtils;
-
 //Java：移掉 K 位数字
 public class RemoveKDigitsXXX402 {
     public static void main(String[] args) {

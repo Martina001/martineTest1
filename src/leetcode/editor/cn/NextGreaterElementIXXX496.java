@@ -48,8 +48,6 @@
 
 package leetcode.editor.cn;
 
-import netscape.javascript.JSObject;
-
 import java.util.*;
 
 //Java：下一个更大元素 I

@@ -32,8 +32,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Random;
-
 //Java：排序数组
 public class SortAnArrayXXX912 {
     public static void main(String[] args) {

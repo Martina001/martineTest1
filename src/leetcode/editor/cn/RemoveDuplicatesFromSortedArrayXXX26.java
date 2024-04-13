@@ -58,8 +58,6 @@
 
 package leetcode.editor.cn;
 
-import static lc.HeadSort.swap;
-
 //Java：删除有序数组中的重复项
 public class RemoveDuplicatesFromSortedArrayXXX26 {
     public static void main(String[] args) {

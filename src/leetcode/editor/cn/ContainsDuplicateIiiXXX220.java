@@ -38,7 +38,7 @@
 
 package leetcode.editor.cn;
 
-import java.util.*;
+import java.util.TreeSet;
 
 //Java：存在重复元素 III
 public class ContainsDuplicateIiiXXX220{

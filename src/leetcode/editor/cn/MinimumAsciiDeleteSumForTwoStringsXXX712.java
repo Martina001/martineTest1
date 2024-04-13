@@ -36,9 +36,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //Java：两个字符串的最小ASCII删除和
 public class MinimumAsciiDeleteSumForTwoStringsXXX712 {
     public static void main(String[] args) {

@@ -42,7 +42,6 @@ package leetcode.editor.cn;
 
 import leetcode.editor.cn.mystructure.TreeNode;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 

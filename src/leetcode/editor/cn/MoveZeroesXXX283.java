@@ -35,8 +35,6 @@
 
 package leetcode.editor.cn;
 
-import static lc.HeadSort.swap;
-
 //Java：移动零
 public class MoveZeroesXXX283{
 public static void main(String[] args) {

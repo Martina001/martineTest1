@@ -53,11 +53,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 //Java：统计打字方案数
 public class CountNumberOfTextsXXX2266 {
     public static void main(String[] args) {

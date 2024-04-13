@@ -3,6 +3,17 @@
   <component name="LeetcodeEditor">
     <option name="projectConfig">
       <map>
+        <entry key="$PROJECT_DIR$/leetcode/editor/cn/TwoSumXXX1.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/TwoSumXXX1.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/TwoSumXXX1.java" />
+              <option name="titleSlug" value="two-sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/lc/leetcode/editor/cn/PalindromeNumber .java">
           <value>
             <LeetcodeEditor>
@@ -215,10 +226,10 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/CoinChangeXXX322.java">
           <value>
             <LeetcodeEditor>
-              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/CoinChangeXXX322.md" />
+              <option name="contentPath" value="$USER_HOME$/algorithm/leetcode/editor/cn/doc/content/CoinChange.md" />
               <option name="frontendQuestionId" value="leetcode.cn322" />
               <option name="host" value="leetcode.cn" />
-              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/CoinChangeXXX322.java" />
+              <option name="path" value="$USER_HOME$/algorithm/leetcode/editor/cn/CoinChange.java" />
               <option name="titleSlug" value="coin-change" />
             </LeetcodeEditor>
           </value>
@@ -402,10 +413,10 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/DecodeStringXXX394.java">
           <value>
             <LeetcodeEditor>
-              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/DecodeStringXXX394.md" />
+              <option name="contentPath" value="$USER_HOME$/algorithm/leetcode/editor/cn/doc/content/DecodeString.md" />
               <option name="frontendQuestionId" value="leetcode.cn394" />
               <option name="host" value="leetcode.cn" />
-              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/DecodeStringXXX394.java" />
+              <option name="path" value="$USER_HOME$/algorithm/leetcode/editor/cn/DecodeString.java" />
               <option name="titleSlug" value="decode-string" />
             </LeetcodeEditor>
           </value>
@@ -649,6 +660,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/HouseRobberXXX198.java" />
               <option name="titleSlug" value="house-robber" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/ImplementQueueUsingStacksXXX232.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/ImplementQueueUsingStacksXXX232.md" />
+              <option name="frontendQuestionId" value="leetcode.cn232" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/ImplementQueueUsingStacksXXX232.java" />
+              <option name="titleSlug" value="implement-queue-using-stacks" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -949,13 +971,24 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/MaxChunksToMakeSortedIiXXX768.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/MaxChunksToMakeSortedIiXXX768.md" />
+              <option name="frontendQuestionId" value="leetcode.cn768" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/MaxChunksToMakeSortedIiXXX768.java" />
+              <option name="titleSlug" value="max-chunks-to-make-sorted-ii" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/MaximumBagsWithFullCapacityOfRocksXXX2279.java">
           <value>
             <LeetcodeEditor>
-              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/MaximumBagsWithFullCapacityOfRocksXXX2279.md" />
+              <option name="contentPath" value="$USER_HOME$/algorithm/leetcode/editor/cn/doc/content/MaximumBagsWithFullCapacityOfRocks.md" />
               <option name="frontendQuestionId" value="leetcode.cn2279" />
               <option name="host" value="leetcode.cn" />
-              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/MaximumBagsWithFullCapacityOfRocksXXX2279.java" />
+              <option name="path" value="$USER_HOME$/algorithm/leetcode/editor/cn/MaximumBagsWithFullCapacityOfRocks.java" />
               <option name="titleSlug" value="maximum-bags-with-full-capacity-of-rocks" />
             </LeetcodeEditor>
           </value>
@@ -1348,10 +1381,10 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/PalindromePartitioningXXX131.java">
           <value>
             <LeetcodeEditor>
-              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/PalindromePartitioningXXX131.md" />
+              <option name="contentPath" value="$USER_HOME$/algorithm/leetcode/editor/cn/doc/content/PalindromePartitioningXXX131.md" />
               <option name="frontendQuestionId" value="leetcode.cn131" />
               <option name="host" value="leetcode.cn" />
-              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/PalindromePartitioningXXX131.java" />
+              <option name="path" value="$USER_HOME$/algorithm/leetcode/editor/cn/PalindromePartitioningXXX131.java" />
               <option name="titleSlug" value="palindrome-partitioning" />
             </LeetcodeEditor>
           </value>
@@ -1359,10 +1392,10 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/PartitionEqualSubsetSumXXX416.java">
           <value>
             <LeetcodeEditor>
-              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/PartitionEqualSubsetSumXXX416.md" />
+              <option name="contentPath" value="$USER_HOME$/algorithm/leetcode/editor/cn/doc/content/PartitionEqualSubsetSumXXX416.md" />
               <option name="frontendQuestionId" value="leetcode.cn416" />
               <option name="host" value="leetcode.cn" />
-              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/PartitionEqualSubsetSumXXX416.java" />
+              <option name="path" value="$USER_HOME$/algorithm/leetcode/editor/cn/PartitionEqualSubsetSum.java" />
               <option name="titleSlug" value="partition-equal-subset-sum" />
             </LeetcodeEditor>
           </value>
@@ -1983,6 +2016,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/SplitWithMinimumSumXXX2578.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/SplitWithMinimumSumXXX2578.md" />
+              <option name="frontendQuestionId" value="leetcode.cn2578" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/SplitWithMinimumSumXXX2578.java" />
+              <option name="titleSlug" value="split-with-minimum-sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/StoneGameIiXXX1140.java">
           <value>
             <LeetcodeEditor>
@@ -2376,6 +2420,61 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/ZigzagConversionXXX6.java" />
               <option name="titleSlug" value="zigzag-conversion" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/algorithm/leetcode/editor/cn/CoinChange.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$USER_HOME$/algorithm/leetcode/editor/cn/doc/content/CoinChange.md" />
+              <option name="frontendQuestionId" value="leetcode.cn322" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$USER_HOME$/algorithm/leetcode/editor/cn/CoinChange.java" />
+              <option name="titleSlug" value="coin-change" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/algorithm/leetcode/editor/cn/DecodeString.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$USER_HOME$/algorithm/leetcode/editor/cn/doc/content/DecodeString.md" />
+              <option name="frontendQuestionId" value="leetcode.cn394" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$USER_HOME$/algorithm/leetcode/editor/cn/DecodeString.java" />
+              <option name="titleSlug" value="decode-string" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/algorithm/leetcode/editor/cn/MaximumBagsWithFullCapacityOfRocks.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$USER_HOME$/algorithm/leetcode/editor/cn/doc/content/MaximumBagsWithFullCapacityOfRocks.md" />
+              <option name="frontendQuestionId" value="leetcode.cn2279" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$USER_HOME$/algorithm/leetcode/editor/cn/MaximumBagsWithFullCapacityOfRocks.java" />
+              <option name="titleSlug" value="maximum-bags-with-full-capacity-of-rocks" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/algorithm/leetcode/editor/cn/PalindromePartitioningXXX131.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$USER_HOME$/algorithm/leetcode/editor/cn/doc/content/PalindromePartitioningXXX131.md" />
+              <option name="frontendQuestionId" value="leetcode.cn131" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$USER_HOME$/algorithm/leetcode/editor/cn/PalindromePartitioningXXX131.java" />
+              <option name="titleSlug" value="palindrome-partitioning" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/algorithm/leetcode/editor/cn/PartitionEqualSubsetSum.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$USER_HOME$/algorithm/leetcode/editor/cn/doc/content/PartitionEqualSubsetSumXXX416.md" />
+              <option name="frontendQuestionId" value="leetcode.cn416" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$USER_HOME$/algorithm/leetcode/editor/cn/PartitionEqualSubsetSum.java" />
+              <option name="titleSlug" value="partition-equal-subset-sum" />
             </LeetcodeEditor>
           </value>
         </entry>

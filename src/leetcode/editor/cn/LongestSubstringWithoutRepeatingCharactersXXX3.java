@@ -40,7 +40,8 @@
 
 package leetcode.editor.cn;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
 
 //Java：无重复字符的最长子串
 public class LongestSubstringWithoutRepeatingCharactersXXX3{

@@ -36,8 +36,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 //Java：两个字符串的删除操作
 public class DeleteOperationForTwoStringsXXX583{
 public static void main(String[] args) {

@@ -56,7 +56,9 @@ package leetcode.editor.cn;
 
 import leetcode.editor.cn.mystructure.TreeNode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 //Java：二叉树的前序遍历
 public class BinaryTreePreorderTraversalXXX144{

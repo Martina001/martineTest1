@@ -34,8 +34,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 //Java：最小路径和
 public class MinimumPathSumXXX64{
 public static void main(String[] args) {

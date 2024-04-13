@@ -34,8 +34,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 //Java：多数元素
 public class MajorityElementXXX169 {
     public static void main(String[] args) {

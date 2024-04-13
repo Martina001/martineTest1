@@ -46,8 +46,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.LinkedList;
-
 //Java：最长上传前缀
 public class LongestUploadedPrefixXXX2424{
 public static void main(String[] args) {

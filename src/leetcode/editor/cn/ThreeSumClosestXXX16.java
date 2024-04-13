@@ -35,9 +35,7 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 //Java：最接近的三数之和
 public class ThreeSumClosestXXX16 {
