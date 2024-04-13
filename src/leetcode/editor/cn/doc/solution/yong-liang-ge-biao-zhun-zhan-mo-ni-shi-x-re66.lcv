@@ -1,0 +1,76 @@
+> Problem: [232. 用栈实现队列](https://leetcode.cn/problems/implement-queue-using-stacks/description/)
+
+[TOC]
+
+# 思路
+
+> 用两个标准栈模拟实现一个队列，**一个专门负责插入的push栈，一个专门负责删除的pop栈**。首先往push栈里面插入数据，当需要删除数据时，将push栈里面的数据依次添加到pop栈中（**同时删除push栈里面的数据**）。这样就确保了删除数据的顺序和插入数据时的顺序是一样的（即先入先出）。**当pop栈里面的数据删除完了时，只需要将push栈的数据再添加到pop栈中**，即重复上述操作
+
+# 解题方法
+
+> 两个标准栈模拟实现一个队列
+
+# 复杂度
+
+时间复杂度:
+
+> 添加时间复杂度, 示例： $O(n)$
+
+空间复杂度:
+
+> 添加空间复杂度, 示例： $O(n)$
+
+# Code
+
+* []
+
+```C++
+class MyQueue {
+    //思路：用两个标准栈模拟实现一个队列，一个专门负责插入的push栈，一个专门负责删除的pop栈
+    //首先往push栈里面插入数据，当需要删除数据时，将push栈里面的数据依次添加到pop栈中（同时删除push栈里面的数据）
+    //这样就确保了删除数据的顺序和插入数据时的顺序是一样的（即先入先出）。
+    //当pop栈里面的数据删除完了时，只需要将push栈的数据再添加到pop栈中，即重复上述操作
+public:
+    MyQueue()
+    {}
+
+    void push(int x) {
+        pushst.push(x);
+    }
+    
+    int pop() {
+        // 如果popst栈为空，则需要先将push栈里面的数据添加到pop栈中
+        if(popst.empty()) {
+            while(!pushst.empty()) {
+                popst.push(pushst.top());
+                pushst.pop();
+            }
+        }
+        int ret = popst.top();
+        popst.pop();
+        return ret;
+    }
+    
+    // 返回pop栈的栈顶元素
+    int peek() {
+        // 如果popst栈为空，则需要先将push栈里面的数据添加到pop栈中
+        if(popst.empty()) {
+            while(!pushst.empty()) {
+                popst.push(pushst.top());
+                pushst.pop();
+            }
+        }
+        return popst.top();
+    }
+    
+    // 如果两个栈都为空，则队列才为空
+    bool empty() {
+        return (pushst.empty() && popst.empty());
+    }
+
+private:
+    std::stack<int> pushst;
+    std::stack<int> popst;
+};
+```
+
